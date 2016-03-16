@@ -106,19 +106,18 @@
 * Separate each concerns to improve programming code
 * If Concerns will be separated, We could be more focus on our concern
 
-
 #####2_2). Extract of Making connection
 	
-> ##### UserDao's concern
+##### UserDao's concern
 
->* How to get a __Connection__ to connect the DB
->* How to make and execute a __Statement__ to apply a DB
->* How to handle our __resources__(Statement, Connection)
+* How to get a __Connection__ to connect the DB
+* How to make and execute a __Statement__ to apply a DB
+* How to handle our __resources__(Statement, Connection)
 
->##### Method extract of overlap code
+##### Method extract of overlap code
 
->###### To do
-  >* To separate a overlap code that get a __Connection__
+###### To do
+  * To separate a overlap code that get a __Connection__
    
  ~~~java
 public void add(User user)throws ClassNotFoundException, SQLException{
