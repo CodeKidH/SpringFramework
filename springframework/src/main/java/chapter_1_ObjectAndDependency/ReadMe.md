@@ -101,23 +101,23 @@
 <hr>
 ##2. Separation of DAO
 
-1) Separation of Concerns
+2_1) Separation of Concerns
 	
 * Separate each concerns to improve programming code
 * If Concerns will be separated, We could be more focus on our concern
 
 
-2). Extract of Making connection
+2_2). Extract of Making connection
 	
-(1) UserDao's concern
+2_2_1) UserDao's concern
 
 * How to get a __Connection__ to connect the DB
 * How to make and execute a __Statement__ to apply a DB
 * How to handle our __resources__(Statement, Connection)
 
-(2) Method extract of overlap code
+2_2_2) Method extract of overlap code
 
-* To do
+2_2_2_1) To do
   * To separate a overlap code that get a __Connection__
    
  ~~~java
