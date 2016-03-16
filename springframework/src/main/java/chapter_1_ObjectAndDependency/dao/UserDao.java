@@ -12,9 +12,8 @@ public class UserDao {
 	
 	public void add(User user)throws ClassNotFoundException, SQLException{
 		
-		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection c = getConnection();
 		
-		Connection c = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl1","HJEONG","1111");
 		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
 		ps.setString(1,user.getId());
 		ps.setString(2,user.getName());
@@ -28,9 +27,8 @@ public class UserDao {
 	
 	public User get(String id)throws ClassNotFoundException, SQLException{
 		
-		Class.forName("oracle.jdbc.driver.OracleDriver");
 		
-		Connection c = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl1","HJEONG","1111");
+		Connection c = getConnection();
 		
 		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
 		ps.setString(1,id);
@@ -47,6 +45,14 @@ public class UserDao {
 		c.close();
 		
 		return user;
+		
+	}
+	
+	//To create a new method to get a connection
+	private Connection getConnection() throws ClassNotFoundException, SQLException{        
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/test","root","1111");
+		return c;
 		
 	}
 	
