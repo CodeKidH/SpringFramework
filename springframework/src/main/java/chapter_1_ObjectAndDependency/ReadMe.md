@@ -101,17 +101,22 @@
 <hr>
 ##2. Separation of DAO
 
-###1) Separation of Concerns
+1) Separation of Concerns
 	
- * Separate each concerns to improve programming code
- * If Concerns will be separated, We could be more focus on our concern
+* Separate each concerns to improve programming code
+* If Concerns will be separated, We could be more focus on our concern
 
 <hr>
 ##3. Extract of Making connection
 	
-###1) UserDao's concern
+1) UserDao's concern
 
- * How to get a Connection to connect the DB
- * How to make and execute a Statement to apply a DB
- * How to handle our resources(Statement, Connection)
+* How to get a _Connection_ to connect the DB
+* How to make and execute a _Statement_ to apply a DB
+* How to handle our _resources_(Statement, Connection)
+
+2) Method extract of overlap code
+
+(1) To do
+ * To separate a overlap code that get a _Connection_
   
