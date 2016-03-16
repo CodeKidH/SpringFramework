@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 import chapter_1_ObjectAndDependency.domain.User;
 
-public class UserDao {
+public abstract class UserDao {
 	
 	public void add(User user)throws ClassNotFoundException, SQLException{
 		
@@ -48,28 +48,23 @@ public class UserDao {
 		
 	}
 	
-	//To create a new method to get a connection
-	private Connection getConnection() throws ClassNotFoundException, SQLException{        
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/test","root","1111");
-		return c;
-		
-	}
+	public abstract Connection getConnection() throws ClassNotFoundException, SQLException;  
 	
 	public static void main(String[]args)throws ClassNotFoundException, SQLException{
-		
-		UserDao dao = new UserDao();
-		
-		User user = new User();
-		user.setId("Kyle");
-		user.setName("Hee");
-		user.setPassword("1111");
-		
-		dao.add(user);
-		
-		User user2 = dao.get(user.getId());
-		
-		System.out.println(user2.getName());
+			
+			UserDao dao = new NUserDao();
+			
+			User user = new User();
+			user.setId("Kyle2");
+			user.setName("Hee2");
+			user.setPassword("11112");
+			
+			dao.add(user);
+			
+			User user2 = dao.get(user.getId());
+			
+			System.out.println(user2.getName());
 		
 	}
 }
+
