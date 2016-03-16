@@ -109,15 +109,15 @@
 
 2_2). Extract of Making connection
 	
-2_2_1) UserDao's concern
+##### UserDao's concern
 
 * How to get a __Connection__ to connect the DB
 * How to make and execute a __Statement__ to apply a DB
 * How to handle our __resources__(Statement, Connection)
 
-2_2_2) Method extract of overlap code
+##### Method extract of overlap code
 
-2_2_2_1) To do
+###### To do
   * To separate a overlap code that get a __Connection__
    
  ~~~java
