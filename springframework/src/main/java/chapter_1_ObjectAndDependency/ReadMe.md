@@ -97,4 +97,75 @@
   }
 
   ~~~
+
+<hr>
+##2. Separation of DAO
+
+1) Separation of Concerns
+	
+* Separate each concerns to improve programming code
+* If Concerns will be separated, We could be more focus on our concern
+
+<hr>
+##3. Extract of Making connection
+	
+1) UserDao's concern
+
+* How to get a __Connection__ to connect the DB
+* How to make and execute a __Statement__ to apply a DB
+* How to handle our __resources__(Statement, Connection)
+
+2) Method extract of overlap code
+
+(1) To do
+ * To separate a overlap code that get a __Connection__
+   
+ ~~~java
+public void add(User user)throws ClassNotFoundException, SQLException{
+		
+		Connection c = getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
+		ps.setString(1,user.getId());
+		ps.setString(2,user.getName());
+		ps.setString(3,user.getPassword());
+		
+		ps.executeUpdate();
+		
+		ps.close();
+		c.close();
+	}
+	
+	public User get(String id)throws ClassNotFoundException, SQLException{
+		
+		
+		Connection c = getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
+		ps.setString(1,id);
+		
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		User user = new User();
+		user.setId(rs.getString("id"));
+		user.setName(rs.getString("name"));
+		user.setPassword(rs.getString("password"));
+		
+		rs.close();
+		ps.close();
+		c.close();
+		
+		return user;
+		
+	}
+	
+	//To create a new method to get a connection
+	private Connection getConnection() throws ClassNotFoundException, SQLException{        
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/test","root","1111");
+		return c;
+		
+	}
+~~~
+
   
