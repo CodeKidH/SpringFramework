@@ -101,6 +101,7 @@
 ##2. Separation of DAO
 
 	1) Separation of Concerns
+	
 	* Separate each concerns to improve programming code
 	* If Concerns will be separated, We could be more focus on our concern
 	
