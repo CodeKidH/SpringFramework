@@ -268,4 +268,12 @@ public class DUserDao extends UserDao{
   * We use a inheritance(extend)
   * Inheritance have a lot of restriction
 
-  
+<hr>
+
+##3. Extend of DAO
+
+####3_1. Separation of Class
+
+	How to extend concerns easily while separating
+
+
