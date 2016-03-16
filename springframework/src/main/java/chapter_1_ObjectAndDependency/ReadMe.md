@@ -259,8 +259,13 @@ public class DUserDao extends UserDao{
 }
 ~~~
 
-++pros
-  *  
+####++pros++
+  *  We call it __Template method pattern__ or __Factory method pattern__
+  *  With two concerns separated, work of change is easier 
+  *  When we make a new DB Connection we don't care about UserDao 
 
+####++cons++
+  * We use a inheritance(extend)
+  * Inheritance have a lot of restriction
 
   
