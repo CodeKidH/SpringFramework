@@ -218,7 +218,7 @@ public void add(User user)throws ClassNotFoundException, SQLException{
 	
 	public static void main(String[]args)throws ClassNotFoundException, SQLException{
 			
-			UserDao dao = new NUserDao();
+			UserDao dao = new NUserDao(); // It must be changed to use a Mysql
 			
 			User user = new User();
 			user.setId("Kyle2");
