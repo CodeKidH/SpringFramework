@@ -348,12 +348,133 @@ public class UserDao {
 * SimpleConnectionMaker.class
 
 ~~~java
+//We don't need a abstract class
 public class SimpleConnectionMaker {
-	
+
 	public Connection getConnection() throws ClassNotFoundException, SQLException{
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/test","root","1111");
 		return c;
+	}
+}
+~~~
+
+####**pros**
+ * The Code was improved
+
+####**cons**
+* We don't change DBConnection flexibly
+* If user change __DBConnection method__ name, We must change our all method
+* We have to know the __class that provide DBConnection__ 
+
+
+####3_2 The introdunction of Interface
+
+	We connect loosely(Interface) two classes to solve above the problem
+
+* UserDao.class
+
+~~~java
+public class UserDao {
+	
+	private ConnectionMaker connectionMaker; //We don't need to know specific Class name
+	
+	public UserDao(){
+		connectionMaker = new NConnectionMaker(); //but, We have to fix the problem
+	}
+	
+	public void add(User user)throws ClassNotFoundException, SQLException{
+		
+		Connection c = connectionMaker.makeConnection(); //If the class will be changed, We don't care 
+		
+		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
+		ps.setString(1,user.getId());
+		ps.setString(2,user.getName());
+		ps.setString(3,user.getPassword());
+		
+		ps.executeUpdate();
+		
+		ps.close();
+		c.close();
+	}
+	
+	public User get(String id)throws ClassNotFoundException, SQLException{
+		
+		
+		Connection c = connectionMaker.makeConnection();
+		
+		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
+		ps.setString(1,id);
+		
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		User user = new User();
+		user.setId(rs.getString("id"));
+		user.setName(rs.getString("name"));
+		user.setPassword(rs.getString("password"));
+		
+		rs.close();
+		ps.close();
+		c.close();
+		
+		return user;
+		
+	}
+	
+	
+	public static void main(String[]args)throws ClassNotFoundException, SQLException{
+			
+			UserDao dao = new UserDao();
+			
+			User user = new User();
+			user.setId("Kyle2");
+			user.setName("Hee2");
+			user.setPassword("11112");
+			
+			dao.add(user);
+			
+			User user2 = dao.get(user.getId());
+			
+			System.out.println(user2.getName());
+		
+	}
+}
+
+~~~
+
+* ConnectionMaker.class(Interface)
+
+~~~java
+
+public interface ConnectionMaker {
+	
+	public Connection makeConnection() throws ClassNotFoundException, SQLException;
+}
+
+~~~
+
+* NConnectionMaker.class(implement) -> mysql
+
+~~~java
+public class NConnectionMaker implements ConnectionMaker{
+	public Connection makeConnection() throws ClassNotFoundException, SQLException{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/test","root","1111");
+		return c;
+	}
+}
+~~~
+
+* DConnectionMaker.class(implement) -> Oracle
+
+~~~java
+
+public class DConnectionMaker implements ConnectionMaker{
+	
+	public Connection makeConnection() throws ClassNotFoundException, SQLException{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+  		Connection c = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl1","HJEONG","1111");
+  		return c;
 	}
 }
 ~~~
