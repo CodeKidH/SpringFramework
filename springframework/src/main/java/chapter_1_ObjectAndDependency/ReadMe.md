@@ -363,7 +363,7 @@ public class SimpleConnectionMaker {
  * The Code was improved
 
 ####**cons**
-* We don't change DBConnection flexibly
+* We can't change DBConnection flexibly
 * If user change __DBConnection method__ name, We must change our all method
 * We have to know the __class that provide DBConnection__ 
 
