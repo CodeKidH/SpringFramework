@@ -486,5 +486,88 @@ public class DConnectionMaker implements ConnectionMaker{
 * We decide a object of class by using  constructor
 
 ####3_3. Separation of setting of relation
+	
+	The Code have a problem with concern of UserDao 
+	The Concern How to connect UserDao and Implementation class 
 
+* UserDao.class
 
+~~~java
+public class UserDao {
+	
+	private ConnectionMaker connectionMaker; 
+	
+	public UserDao(ConnectionMaker connectionMaker){
+		this.connectionMaker = connectionMaker; 
+	}
+	
+	public void add(User user)throws ClassNotFoundException, SQLException{
+		
+		Connection c = connectionMaker.makeConnection(); 
+		
+		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
+		ps.setString(1,user.getId());
+		ps.setString(2,user.getName());
+		ps.setString(3,user.getPassword());
+		
+		ps.executeUpdate();
+		
+		ps.close();
+		c.close();
+	}
+	
+	public User get(String id)throws ClassNotFoundException, SQLException{
+		
+		
+		Connection c = connectionMaker.makeConnection();
+		
+		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
+		ps.setString(1,id);
+		
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		User user = new User();
+		user.setId(rs.getString("id"));
+		user.setName(rs.getString("name"));
+		user.setPassword(rs.getString("password"));
+		
+		rs.close();
+		ps.close();
+		c.close();
+		
+		return user;
+		
+	}
+}
+~~~
+
+* UserDaoTest.class
+
+~~~java
+public class UserDaoTest {
+	public static void main(String[]args)throws ClassNotFoundException, SQLException{
+		
+		//This line decide to DBConnection for UserDao
+		ConnectionMaker connectionMaker = new NConnectionMaker();
+		
+		//Provide Object of ConnectionMaker type with UserDao
+		UserDao dao = new UserDao(connectionMaker);
+		
+		User user = new User();
+		user.setId("Kyle2");
+		user.setName("Hee2");
+		user.setPassword("11112");
+		
+		dao.add(user);
+		
+		User user2 = dao.get(user.getId());
+		
+		System.out.println(user2.getName());
+	
+	}
+}
+~~~
+
+####**pros**
+* UserDao can focus on Own work
+* If DBConnection will be changed, We will just fix one point 
