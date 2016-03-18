@@ -276,4 +276,85 @@ public class DUserDao extends UserDao{
 
 	How to extend concerns easily while separating
 
+* UserDao.class	
+~~~java
+public class UserDao {
+	
+	private SimpleConnectionMaker simpleConnectionMaker;
+	
+	public UserDao(){
+		simpleConnectionMaker = new SimpleConnectionMaker();
+	}
+	
+	public void add(User user)throws ClassNotFoundException, SQLException{
+		
+		Connection c = simpleConnectionMaker.getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
+		ps.setString(1,user.getId());
+		ps.setString(2,user.getName());
+		ps.setString(3,user.getPassword());
+		
+		ps.executeUpdate();
+		
+		ps.close();
+		c.close();
+	}
+	
+	public User get(String id)throws ClassNotFoundException, SQLException{
+		
+		
+		Connection c = simpleConnectionMaker.getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
+		ps.setString(1,id);
+		
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		User user = new User();
+		user.setId(rs.getString("id"));
+		user.setName(rs.getString("name"));
+		user.setPassword(rs.getString("password"));
+		
+		rs.close();
+		ps.close();
+		c.close();
+		
+		return user;
+		
+	}
+	
+	
+	public static void main(String[]args)throws ClassNotFoundException, SQLException{
+			
+			UserDao dao = new UserDao();
+			
+			User user = new User();
+			user.setId("Kyle2");
+			user.setName("Hee2");
+			user.setPassword("11112");
+			
+			dao.add(user);
+			
+			User user2 = dao.get(user.getId());
+			
+			System.out.println(user2.getName());
+		
+	}
+}
+
+~~~
+
+* SimpleConnectionMaker.class
+
+~~~java
+public class SimpleConnectionMaker {
+	
+	public Connection getConnection() throws ClassNotFoundException, SQLException{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/test","root","1111");
+		return c;
+	}
+}
+~~~
 
