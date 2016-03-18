@@ -479,3 +479,12 @@ public class DConnectionMaker implements ConnectionMaker{
 }
 ~~~
 
+####**pros**
+* We don't need to fix the UserDao, though N or D would change their a DBConnection
+
+####**cons**
+* We decide a object of class by using  constructor
+
+####3_3. Separation of setting of relation
+
+
