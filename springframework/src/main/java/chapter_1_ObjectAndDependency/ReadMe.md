@@ -571,3 +571,24 @@ public class UserDaoTest {
 ####**pros**
 * UserDao can focus on Own work
 * If DBConnection will be changed, We will just fix one point 
+
+
+####3_4. Principle and Pattern
+
+* OCP(Open-Closed Principle) 
+	- This is one of the design principle for OOP
+	- Class or Module has to be opened about extension. on the contrary, it has to be closed about change
+	- ex) UserDao is opened about DBConnection, UserDao is closed about implementation code 
+
+* High coherence and Low coupling
+	- High cohenrence
+		- High cohenrence means some module will be changed since tiny change occur
+		- UserDao.class is High cohenrence
+	
+	- Low coupling
+		- If some change occur, it doesn't effect other modules  
+		- It has a low coupling between Userdao and ConnectionMaker
+
+* Strategy Pattern
+	- Strategy Pattern is to best fit the OCP(Open-Closed Principle) 
+	- UserDao.class == Context, How to connect DB(implementation class) == Strategy
