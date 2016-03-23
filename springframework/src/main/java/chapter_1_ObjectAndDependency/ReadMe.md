@@ -599,7 +599,7 @@ public class UserDaoTest {
 #### 4_1. Object Factory
 
 	UserDaoTest.class has a concern of connecting which implementation class(ConnectionMaker.class) 
-	Actually, I made a UserDaoTest.class to test, so It will be used to only test 
+	Actually, I made a UserDaoTest.class to test, so It should only be used in testing
 
 * Factory
 
