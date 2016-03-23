@@ -649,9 +649,53 @@ public class UserDaoTest {
 	Factory class(DaoFactory.class) is in charge of bluepring in this source
 	As following the instruction,  Client(UserDaotest) just use UserDao 
 	
-	Client ---> <<usage>> ---> UserDao ---><<usage>>---> connectionMaker
-  	  |                        |<<create>>				|
-	  ---><<request>>--->DaoFactory-----------><<create>>---->NConnectionMaker
+#### 4_2. Using of Factory object
+
+	If DaoFactory has a lot of DAO? 
+	We should check each DAO to connect DBConnection
+
+* FactoryDao.class
+~~~java
+public class DaoFactory {
+	
+	public UserDao userDao(){
+		return new UserDao(new NConnectionMaker()); //occurence of overlap
+	}
+	
+	public AccountDao accountDao(){
+		return new accountDao(new NConnectinoMaker());//occurence of overlap
+	}
+	
+	public MessageDao messageDao(){
+		return new messageDao(new NConnectinoMaker());//occurence of overlap
+	}
+
+}
+~~~
+
+* Improving 
+
+~~~java
+public class DaoFactory {
+	
+	public UserDao userDao(){
+		return new UserDao(connectionMaker()); 
+	}
+	
+	public AccountDao accountDao(){
+		return new accountDao(connectionMaker());
+	}
+	
+	public MessageDao messageDao(){
+		return new messageDao(connectionMaker());
+	}
+	
+	public ConnectionMaker connectionMaker(){
+		return new NConnectionMaker();
+	}
+
+}
+~~~
 
 
 
