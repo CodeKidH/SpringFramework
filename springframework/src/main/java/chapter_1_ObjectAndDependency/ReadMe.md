@@ -592,3 +592,18 @@ public class UserDaoTest {
 * Strategy Pattern
 	- Strategy Pattern is to best fit the OCP(Open-Closed Principle) 
 	- UserDao.class == Context, How to connect DB(implementation class) == Strategy
+<hr>
+
+## 4. IOC(Inversion of Control)
+
+#### 4_1. Object Factory
+
+	UserDaoTest.class has a concern of connecting which implementation class(ConnectionMaker.class) 
+	Actually, I made a UserDaoTest.class to test, so It will be used to only test 
+
+* Factory
+
+	- Factory is a object
+	- Factory decide how to make a object and return a object
+
+
