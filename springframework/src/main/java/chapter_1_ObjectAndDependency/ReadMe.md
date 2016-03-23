@@ -648,6 +648,10 @@ public class UserDaoTest {
 	
 	Factory class(DaoFactory.class) is in charge of bluepring in this source
 	As following the instruction,  Client(UserDaotest) just use UserDao 
+	
+	Client ---> <<usage>> ---> UserDao ---><<usage>>---> connectionMaker
+  	  |                        |<<create>>				|
+	  ---><<request>>--->DaoFactory-----------><<create>>---->NConnectionMaker
 
 
 
