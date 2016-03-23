@@ -606,4 +606,50 @@ public class UserDaoTest {
 	- Factory is a object
 	- Factory decide how to make a object and return a object
 
+* DaoFactory.class
+
+~~~java
+public class DaoFactory {
+	
+	public UserDao userDao(){ //Method of Factory will decide how to make type of UserDao object 
+		ConnectionMaker connectionMaker = new NConnectionMaker();
+		UserDao userDao = new UserDao(connectionMaker);
+		return userDao;
+	}
+
+}
+~~~
+
+* UserDaoTest.class
+
+~~~java
+public class UserDaoTest {
+	public static void main(String[]args)throws ClassNotFoundException, SQLException{
+		
+		
+		UserDao dao = new DaoFactory().userDao();
+		
+		User user = new User();
+		user.setId("Kyle2");
+		user.setName("Hee2");
+		user.setPassword("11112");
+		
+		dao.add(user);
+		
+		User user2 = dao.get(user.getId());
+		
+		System.out.println(user2.getName());
+	
+	}
+}
+~~~
+
+* Factory as a blueprint
+	
+	Factory class(DaoFactory.class) is in charge of bluepring in this source
+	As following the instruction,  Client(UserDaotest) just use UserDao 
+
+
+
+
 
