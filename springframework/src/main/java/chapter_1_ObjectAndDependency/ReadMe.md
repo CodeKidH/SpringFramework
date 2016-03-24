@@ -697,7 +697,14 @@ public class DaoFactory {
 }
 ~~~
 
+#### 4_3. IOC through transfer of right to control
 
+	IOC : Control flow of program is changed 
+
+* Object in IOC don't choose using object and don't create object 
+* Object in IOC don't know where they come form 
+* All right to control delegate other object, not own
+* Framework must have a IOC 
 
 
 
