@@ -75,6 +75,9 @@ public class UserDaoTest {
 
 * What is different between Object Factory and ApplicationContext?
 
+	Object Factory's object 
+		- chapter_1_ObjectAndDependency.dao.UserDao@__2a139a55__
+		- chapter_1_ObjectAndDependency.dao.UserDao@__15db9742__
 
 
 
