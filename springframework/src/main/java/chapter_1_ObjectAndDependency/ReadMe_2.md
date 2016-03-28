@@ -83,6 +83,7 @@ public class UserDaoTest {
   System.out.println(dao);
   System.out.println(dao1);
 ~~~
+	- result
 		chapter_1_ObjectAndDependency.dao.UserDao@2a139a55
 		chapter_1_ObjectAndDependency.dao.UserDao@15db9742
 		dao==dao1(false)
@@ -97,11 +98,17 @@ UserDao dao1 = context.getBean("userDao",UserDao.class);
 System.out.println(dao);
 System.out.println(dao1);
 ~~~
-
+	- result
 		chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
 		chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
 		dao==dao1(true)
 
+#### 6_1. ApplicationContext as a Singleton registry
+
+		ApplicationContext is a Singleton registry which manage singleton
+
+* Why does Spring make a bean of singleton?
+	- Because Spring usually operates on server
 
 
 
