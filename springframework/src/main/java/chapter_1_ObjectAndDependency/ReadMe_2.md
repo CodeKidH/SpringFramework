@@ -69,6 +69,12 @@ public class UserDaoTest {
   - ApplicationContext provide multi IOC service 
   - ApplicationContext give a lot of ways to search for bean
 
+<hr>
+
+## 6. Singleton registry and Object scope
+
+* What is different between Object Factory and ApplicationContext?
+
 
 
 
