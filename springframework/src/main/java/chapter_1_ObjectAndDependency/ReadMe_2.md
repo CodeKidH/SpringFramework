@@ -73,17 +73,19 @@ public class UserDaoTest {
 
 ## 6. Singleton registry and Object scope
 
-* What is different between Object Factory and ApplicationContext?
+	What is different between Object Factory and ApplicationContext?
 
-	- Object Factory's object 
-		chapter_1_ObjectAndDependency.dao.UserDao@2a139a55
-		chapter_1_ObjectAndDependency.dao.UserDao@15db9742
-		Object is different
-		
-	- ApplicationContext's object
-		chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
-		chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
-		Object is same
+* Object Factory's object 
+
+	chapter_1_ObjectAndDependency.dao.UserDao@2a139a55
+	chapter_1_ObjectAndDependency.dao.UserDao@15db9742
+	Object is different
+	
+* ApplicationContext's object
+
+	chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
+	chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
+	Object is same
 
 
 
