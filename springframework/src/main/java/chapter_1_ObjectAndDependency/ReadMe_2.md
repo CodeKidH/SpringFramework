@@ -77,15 +77,18 @@ public class UserDaoTest {
 
 * Object Factory's object 
 
-	chapter_1_ObjectAndDependency.dao.UserDao@2a139a55
-	chapter_1_ObjectAndDependency.dao.UserDao@15db9742
-	Object is different
+		chapter_1_ObjectAndDependency.dao.UserDao@2a139a55
+		chapter_1_ObjectAndDependency.dao.UserDao@15db9742
+		== false
+	
 	
 * ApplicationContext's object
 
-	chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
-	chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
-	Object is same
+		chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
+		chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
+		== true
+
+
 
 
 
