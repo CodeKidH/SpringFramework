@@ -75,7 +75,7 @@ public class UserDaoTest {
 
 	What is different between Object Factory and ApplicationContext?
 
-* Object Factory's object 
+* Factory's object 
 ~~~java
   UserDao dao = new DaoFactory().userDao();
   UserDao dao1 = new DaoFactory().userDao();
@@ -110,6 +110,66 @@ System.out.println(dao1);
 * Why does Spring make a bean of singleton?
 	- Because Spring usually operates on server
 
+#### 6_2. Singleton and Status of object
+
+		Singleton on the Multithread environment should be stateless 
+		Status of stateless have to use a local variable to keep stateless
+
+* UserDao.class
+
+~~~java
+public class UserDao {
+	
+	private ConnectionMaker connectionMaker; 
+	
+	//If it is worked on Multithread environment, It would raise a problem 
+	private Connection c;
+	private User user;
+	
+	public UserDao(ConnectionMaker connectionMaker){
+		this.connectionMaker = connectionMaker; 
+	}
+	
+	public void add(User user)throws ClassNotFoundException, SQLException{
+		
+		Connection c = connectionMaker.makeConnection(); 
+		
+		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
+		ps.setString(1,user.getId());
+		ps.setString(2,user.getName());
+		ps.setString(3,user.getPassword());
+		
+		ps.executeUpdate();
+		
+		ps.close();
+		c.close();
+	}
+	
+	public User get(String id)throws ClassNotFoundException, SQLException{
+		
+		
+		this.c = connectionMaker.makeConnection();
+		
+		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
+		ps.setString(1,id);
+		
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		this.user = new User();
+		this.user.setId(rs.getString("id"));
+		this.user.setName(rs.getString("name"));
+		this.user.setPassword(rs.getString("password"));
+		
+		rs.close();
+		ps.close();
+		c.close();
+		
+		return this.user;
+		
+	}
+}
+
+~~~
 
 
 
