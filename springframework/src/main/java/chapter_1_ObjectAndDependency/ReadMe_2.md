@@ -174,7 +174,7 @@ public class UserDao {
 #### 6_3 . Scope of Spring bean
 
 	Object is managed by Spring, We call it bean
-	Which means, Bean is created, existed and adjustment of the scope 
+	Scope of Bean is adjustment of the scope  which is created
 	Spring's basic scope is Singleton
 	
 
