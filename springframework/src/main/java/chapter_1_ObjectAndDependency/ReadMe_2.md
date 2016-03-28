@@ -76,8 +76,14 @@ public class UserDaoTest {
 * What is different between Object Factory and ApplicationContext?
 
 	Object Factory's object 
-		- chapter_1_ObjectAndDependency.dao.UserDao@__2a139a55__
-		- chapter_1_ObjectAndDependency.dao.UserDao@__15db9742__
+		- chapter_1_ObjectAndDependency.dao.UserDao@2a139a55
+		- chapter_1_ObjectAndDependency.dao.UserDao@15db9742
+		- Object is different
+		
+	ApplicationContext's object
+		- chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
+		- chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
+		- Object is same
 
 
 
