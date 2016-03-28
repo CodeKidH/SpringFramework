@@ -76,17 +76,31 @@ public class UserDaoTest {
 	What is different between Object Factory and ApplicationContext?
 
 * Object Factory's object 
-
+~~~java
+  UserDao dao = new DaoFactory().userDao();
+  UserDao dao1 = new DaoFactory().userDao();
+  
+  System.out.println(dao);
+  System.out.println(dao1);
+~~~
 		chapter_1_ObjectAndDependency.dao.UserDao@2a139a55
 		chapter_1_ObjectAndDependency.dao.UserDao@15db9742
-		== false
+		dao==dao1(false)
 	
 	
 * ApplicationContext's object
 
+~~~java
+UserDao dao = context.getBean("userDao",UserDao.class);
+UserDao dao1 = context.getBean("userDao",UserDao.class);
+
+System.out.println(dao);
+System.out.println(dao1);
+~~~
+
 		chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
 		chapter_1_ObjectAndDependency.dao.UserDao@6366ebe0
-		== true
+		dao==dao1(true)
 
 
 
