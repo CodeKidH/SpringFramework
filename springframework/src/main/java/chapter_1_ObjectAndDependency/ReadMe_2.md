@@ -202,5 +202,13 @@ public class UserDao {
 * DI
 	- DI need a Interface 
 	- Dependency Relationship of runtime is decided by something, like Container(IOC Container, DaoFactory, ApplicationContext..)
+
+* DI of UserDao
+
+	- Before Constructor is separated
+	~~~java
+	public UserDao(){
+		connectionMaker = new DconnectionMaker();
+	}
 	
 
