@@ -178,5 +178,15 @@ public class UserDao {
 	Spring's basic scope is Singleton
 	
 
+<hr>
 
+## 7. DI
 
+#### 7_1. IOC and DI
+
+	Operation principle of IOC Spring is DI
+	
+#### 7_2. Runtime Dependency Relationship
+
+* Dependency Relationship
+		A --------> B
