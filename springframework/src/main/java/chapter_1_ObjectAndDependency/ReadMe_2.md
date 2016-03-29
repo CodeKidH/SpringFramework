@@ -189,4 +189,18 @@ public class UserDao {
 #### 7_2. Runtime Dependency Relationship
 
 * Dependency Relationship
-		A --------> B
+	- A --------> B
+	- If B was changed, A also will be changed 
+	- If A was changed, B doesn't care about it 
+
+* Dependency Relationship of UserDao
+	- UserDao ---------> ConnectionMaker(interface) ----implementation----> DConnectionMaker(dependency object)
+	- If ConnectionMaker was changed, UserDao also will be changed
+	- But If DConnectinMaker was changed, UserDao doesn't care about it Just Use a Connection
+	- DI is connection between UserDao(Client) and DConnectionMaker(dependency object) 
+
+* DI
+	- DI need a Interface 
+	- Dependency Relationship of runtime is decided by something, like Container(IOC Container, DaoFactory, ApplicationContext..)
+	
+
