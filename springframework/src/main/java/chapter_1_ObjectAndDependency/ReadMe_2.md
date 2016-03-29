@@ -205,10 +205,27 @@ public class UserDao {
 
 * DI of UserDao
 
-	- Before Constructor is separated
+	- Before Constructor is separated in UserDao.class
 	~~~java
 	public UserDao(){
 		connectionMaker = new DconnectionMaker();
 	}
+	~~~
+
+	- After we use a DaoFactory
+	~~~java
+	public class UserDao {
+	
+		private ConnectionMaker connectionMaker; 
+		
+		public UserDao(ConnectionMaker connectionMaker){
+			this.connectionMaker = connectionMaker; 
+		}
+	}
+	//	UserDao.class <---------------------- DConnectioniMaker.class
+	//  <connectionMaker>	        DI
+	//        <add()>   -------------------------->makeConnectionMaker()
+	//	           Usage Dependency relationship
+	~~~
 	
 
