@@ -227,5 +227,19 @@ public class UserDao {
 	//        <add()>   -------------------------->makeConnectionMaker()
 	//	           Usage Dependency relationship
 	~~~
+
+#### 7_3. Dependency lookup and Injection
+
+* Spring provide two ways of IOC
+	- DI
+	- Dependency lookup
+
+* Dependency lookup
+
+
+		Creating of object , Using of object was decided by IOC but when It get a object
+		It request a container to get a object in person
+		Not use a Method or Constructor
+
 	
 
