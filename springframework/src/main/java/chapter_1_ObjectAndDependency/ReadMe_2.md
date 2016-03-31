@@ -1,4 +1,4 @@
-## 5. Spring of IOC
+# 5. Spring of IOC
 
 #### 5_1. Spring's IOC by using object factory
 
@@ -71,7 +71,7 @@ public class UserDaoTest {
 
 <hr>
 
-## 6. Singleton registry and Object scope
+# 6. Singleton registry and Object scope
 
 	What is different between Object Factory and ApplicationContext?
 
@@ -180,7 +180,7 @@ public class UserDao {
 
 <hr>
 
-## 7. DI
+# 7. DI
 
 #### 7_1. IOC and DI
 
@@ -372,6 +372,11 @@ public class UserDao {
 	}
 	~~~
 
+# 8. To use a XML 
+
+	When we use a Di, XML is more accessible DI than Java 
+
+#### 8_1 XML config
 
 
 
