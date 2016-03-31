@@ -337,7 +337,41 @@ public class UserDao {
 	}
 	~~~
 
-#### 7_5 DI by using a method
+#### 7_5 To DI by using a method
+	
+	We have two ways of DI by Using mehtod
+	1. Using Normal Method
+	2. Using Setter Method
+
+* Setter Method
+
+	- Method's name always start 'set'
+	- Setter Method saves a outside object reference and then inner method can use it
+	- It has a only one parameter
+	
+* Normal Mehtod
+	
+	- It has a lot of parameter
+
+* Using
+	- UserDao.class
+	~~~java
+	public void setConnectionMaker(ConnectionMaker connectionMaker){
+		this.connectionMaker = connectionMaker; 
+	}
+	~~~
+
+	- CountingDaoFactory.class
+	~~~java
+	@Bean 
+	public UserDao userDao(){
+		
+		UserDao userDao = new UserDao();
+		userDao.setConnectionMaker(connectionMaker());
+		return userDao;
+	}
+	~~~
+
 
 
 
