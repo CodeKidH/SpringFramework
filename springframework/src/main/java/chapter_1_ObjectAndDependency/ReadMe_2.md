@@ -241,5 +241,102 @@ public class UserDao {
 		It request a container to get a object in person
 		Not use a Method or Constructor
 
+
+#### 7_4 Application example of DI
+
+* To exchange of function
+	If we use two DBs, One is a LocalDB, Another one is ProductionDB
+
+	- DaoFactory.class
 	
+	~~~java
+	@Bean
+	public ConnectionMaker connectionMaker(){
+		return new LocalDBConnectionMaker(); // Using a local
+	}
+	~~~
+
+	~~~java
+	@Bean
+	public ConnectionMaker connectionMaker(){
+		return new ProductionDBConnectionMaker(); // Using a production
+	}
+	~~~
+
+* To add a function 
+
+	How many times DAO access to DB?
+	Will I add a this logic each DB Connection to know access times? and When this work ends, I delete it every part
+	so We use a DI to make work easier
+
+	- CountingConnectionMaker.class
+	~~~java
+	public class CountingConnectionMaker implements ConnectionMaker{
+	
+		int count = 0;
+		private ConnectionMaker realConnectionMaker;
+		
+		public CountingConnectionMaker(ConnectionMaker realConnectionMaker){
+			this.realConnectionMaker = realConnectionMaker;
+		}
+		
+		public Connection makeConnection()throws ClassNotFoundException, SQLException{
+			this.count++;
+			return realConnectionMaker.makeConnection();
+		}
+		
+		public int getCount(){
+			return this.count;
+		}
+	}
+	~~~
+	
+	- CountingDaoFactory.class
+	~~~java
+	@Configuration 
+	public class CountingDaoFactory {
+		
+		@Bean 
+		public UserDao userDao(){
+			return new UserDao(connectionMaker()); 
+		}
+		
+		@Bean
+		public ConnectionMaker connectionMaker(){
+			
+			return new CountingConnectionMaker(realConnectionMaker());
+		}
+		
+		@Bean
+		public ConnectionMaker realConnectionMaker(){
+			return new NConnectionMaker();
+		}
+	
+	}
+	~~~
+	
+	- Add Before
+	~~~java
+		UserDao --------------> NConnection
+	~~~
+	- Add After
+	~~~java
+		UserDao --------------> CountingConnectionMaker -------------> NConnection
+	~~~
+	
+	- UserDaoTest.class
+	
+	~~~java
+	public class UserDaoTest {
+		public static void main(String[]args)throws ClassNotFoundException, SQLException{
+			
+			//I can get a any Bean by using DL
+			CountingConnectionMaker ccm = context.getBean("connectionMaker",CountingConnectionMaker.class);
+			System.out.println("count:"+ccm.getCount());
+		}
+	}
+	~~~
+
+
+
 
