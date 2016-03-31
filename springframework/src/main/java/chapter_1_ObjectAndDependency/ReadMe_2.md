@@ -330,12 +330,14 @@ public class UserDao {
 	public class UserDaoTest {
 		public static void main(String[]args)throws ClassNotFoundException, SQLException{
 			
-			//I can get a any Bean by using DL
+			//I can get any Bean by using DL
 			CountingConnectionMaker ccm = context.getBean("connectionMaker",CountingConnectionMaker.class);
 			System.out.println("count:"+ccm.getCount());
 		}
 	}
 	~~~
+
+#### 7_5 DI by using a method
 
 
 
