@@ -2,7 +2,11 @@ package chapter_1_ObjectAndDependency;
 
 import java.sql.SQLException;
 
-import chapter_1_ObjectAndDependency.dao.DaoFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import chapter_1_ObjectAndDependency.dao.CountingConnectionMaker;
+import chapter_1_ObjectAndDependency.dao.CountingDaoFactory;
 import chapter_1_ObjectAndDependency.dao.UserDao;
 import chapter_1_ObjectAndDependency.domain.User;
 
@@ -10,7 +14,9 @@ public class UserDaoTest {
 	public static void main(String[]args)throws ClassNotFoundException, SQLException{
 		
 		
-		UserDao dao = new DaoFactory().userDao();
+		ApplicationContext context = new AnnotationConfigApplicationContext(CountingDaoFactory.class);
+		
+		UserDao dao = context.getBean("userDao",UserDao.class);
 		
 		User user = new User();
 		user.setId("Kyle2");
@@ -22,6 +28,8 @@ public class UserDaoTest {
 		User user2 = dao.get(user.getId());
 		
 		System.out.println(user2.getName());
-	
+		
+		CountingConnectionMaker ccm = context.getBean("connectionMaker",CountingConnectionMaker.class);
+		System.out.println("count:"+ccm.getCount());
 	}
 }

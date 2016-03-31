@@ -10,6 +10,8 @@ import chapter_1_ObjectAndDependency.domain.User;
 public class UserDao {
 	
 	private ConnectionMaker connectionMaker; 
+	private Connection c;
+	private User user;
 	
 	public UserDao(ConnectionMaker connectionMaker){
 		this.connectionMaker = connectionMaker; 
@@ -33,23 +35,23 @@ public class UserDao {
 	public User get(String id)throws ClassNotFoundException, SQLException{
 		
 		
-		Connection c = connectionMaker.makeConnection();
+		this.c = connectionMaker.makeConnection();
 		
 		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
 		ps.setString(1,id);
 		
 		ResultSet rs = ps.executeQuery();
 		rs.next();
-		User user = new User();
-		user.setId(rs.getString("id"));
-		user.setName(rs.getString("name"));
-		user.setPassword(rs.getString("password"));
+		this.user = new User();
+		this.user.setId(rs.getString("id"));
+		this.user.setName(rs.getString("name"));
+		this.user.setPassword(rs.getString("password"));
 		
 		rs.close();
 		ps.close();
 		c.close();
 		
-		return user;
+		return this.user;
 		
 	}
 }
