@@ -28,7 +28,7 @@ public class UserDaoTest {
 		
 		System.out.println(user2.getName());
 		
-		CountingConnectionMaker ccm = context.getBean("connectionMaker",CountingConnectionMaker.class);
-		System.out.println("count:"+ccm.getCount());
+	/*	CountingConnectionMaker ccm = context.getBean("connectionMaker",CountingConnectionMaker.class);
+		System.out.println("count:"+ccm.getCount());*/
 	}
 }
