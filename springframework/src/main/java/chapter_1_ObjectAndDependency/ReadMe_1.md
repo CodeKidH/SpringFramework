@@ -2,7 +2,7 @@
 
 <hr>
 
-##1. Stupid DAO
+#1. Stupid DAO
 
   - Domain of user
   ~~~java
@@ -99,7 +99,7 @@
   ~~~
 
 <hr>
-##2. Separation of DAO
+#2. Separation of DAO
 
 ####2_1 Separation of Concerns
 	
@@ -270,7 +270,7 @@ public class DUserDao extends UserDao{
 
 <hr>
 
-##3. Extend of DAO
+#3. Extend of DAO
 
 ####3_1. Separation of Class
 
@@ -594,7 +594,7 @@ public class UserDaoTest {
 	- UserDao.class == Context, How to connect DB(implementation class) == Strategy
 <hr>
 
-## 4. IOC(Inversion of Control)
+# 4. IOC(Inversion of Control)
 
 #### 4_1. Object Factory
 
