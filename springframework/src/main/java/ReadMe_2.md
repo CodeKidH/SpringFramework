@@ -480,4 +480,103 @@ public class UserDao {
 		new ClassPathXmlApplicationContext("applicationContext.xml",UserDao.class)
 ~~~
 	
+#### 8_3. DataSource Interface
+
+* To apply DataSource Interface
+	
+	- UserDao.class
+	~~~java
+	private DataSource dataSource;
+	private Connection c;
+	private User user;
+	
+	public void setDataSource(DataSource dataSource){
+		this.dataSource = dataSource; 
+	}
+	
+	public void add(User user)throws ClassNotFoundException, SQLException{
+		
+		Connection c = dataSource.getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
+		ps.setString(1,user.getId());
+		ps.setString(2,user.getName());
+		ps.setString(3,user.getPassword());
+		
+		ps.executeUpdate();
+		
+		ps.close();
+		c.close();
+	}
+	~~~
+
+* Java's way - CountingDaoFactory
+
+~~~java
+@Configuration // It means DaoFactory is setting information which will be used by ApplicationContext
+public class CountingDaoFactory {
+	
+	@Bean //It will be in charge of creating object
+	public UserDao userDao(){
+		
+		UserDao userDao = new UserDao();
+		userDao.setDataSource(dataSource());
+		return userDao;
+	}
+	
+	@Bean
+	public ConnectionMaker connectionMaker(){
+		
+		CountingConnectionMaker connect = new CountingConnectionMaker()	;
+		connect.setCountingConnectionMaker(realConnectionMaker());
+		return connect;
+	}
+	
+	@Bean
+	public ConnectionMaker realConnectionMaker(){
+		return new NConnectionMaker();
+	}
+	
+	@Bean
+	public DataSource dataSource(){
+		
+		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+		
+		dataSource.setDriverClass(com.mysql.jdbc.Driver.class);
+		dataSource.setUrl("jdbc:mysql://localhost/test");
+		dataSource.setUsername("root");
+		dataSource.setPassword("1111");
+		
+		return dataSource;
+	}
+
+}
+
+~~~
+
+* XML's way - ApplicationContext.xml
+
+~~~xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+								http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost/test"/>
+		<property name="username" value="root"/>
+		<property name="password" value="1111"/>
+	</bean>
+	
+	<bean id="userDao" class="chapter_1_ObjectAndDependency.dao.UserDao">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	
+</beans>
+~~~
+
+
 
