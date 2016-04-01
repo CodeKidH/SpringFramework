@@ -458,5 +458,11 @@ public class UserDao {
 			
 ~~~
 
+* UserDaoTest.class
+~~~java
+
+	ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
+~~~
+
 
 
