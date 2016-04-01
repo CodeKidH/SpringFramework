@@ -378,6 +378,58 @@ public class UserDao {
 
 #### 8_1 XML config
 
+	~~~java
+	@Configuration -----------------> <beans>
+	@Bean methodname ---------------> <bean id="methodName">
+	@return new BeanClass() --------> class="a,b,c...BeanClass"
+	~~~
+
+* connectionMaker() conversion
+	
+	~~~java
+	@Bean
+	public ConnectionMaker connectionMaker(){
+		CountingConnectionMaker connect = new CountingConnectionMaker()	;
+		connect.setCountingConnectionMaker(realConnectionMaker()); 
+	
+		setCountingConnectionMaker-----> <property name="countingConnectionMaker"  
+		realConnectionMaker() ----------> ref ="realConnectionMaker"/>
+
+		return connect;
+	}
+	
+	@Bean --------------------------------------> <bean
+	public ConnectionMaker realConnectionMaker(){ --------------> id="realConnectionMaker"
+		return new NConnectionMaker(); -----------> class="NConnectionMaker"
+	}
+	~~~
+	
+	~~~xml
+	<bean id="connectionMaker" class="chapter_1_ObjectAndDependency.dao.CountingConnectionMaker">
+		<property name="countingConnectionMaker" ref="realConnectionMaker"/>
+	</bean>
+	
+	<bean id="realConnectionMaker" class="chapter_1_ObjectAndDependency.dao.NConnectionMaker">
+	</bean>
+	~~~
+
+* UserDao conversion
+
+	~~~java
+	@Bean 
+	public UserDao userDao(){
+		
+		UserDao userDao = new UserDao();
+		userDao.setConnectionMaker(connectionMaker());
+		return userDao;
+	}
+	~~~
+	
+	~~~xml
+	<bean id="userDao" class="chapter_1_ObjectAndDependency.dao.UserDao">
+		<property name="connectionMaker" ref="connectionMaker">
+	</bean>
+	~~~
 
 
 
