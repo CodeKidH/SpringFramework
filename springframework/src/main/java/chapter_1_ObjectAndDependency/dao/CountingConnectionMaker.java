@@ -8,7 +8,7 @@ public class CountingConnectionMaker implements ConnectionMaker{
 	int count = 0;
 	private ConnectionMaker realConnectionMaker;
 	
-	public CountingConnectionMaker(ConnectionMaker realConnectionMaker){
+	public void setCountingConnectionMaker(ConnectionMaker realConnectionMaker){
 		this.realConnectionMaker = realConnectionMaker;
 	}
 	

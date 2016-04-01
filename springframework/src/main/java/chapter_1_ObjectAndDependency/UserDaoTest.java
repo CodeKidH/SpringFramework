@@ -3,10 +3,9 @@ package chapter_1_ObjectAndDependency;
 import java.sql.SQLException;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 
 import chapter_1_ObjectAndDependency.dao.CountingConnectionMaker;
-import chapter_1_ObjectAndDependency.dao.CountingDaoFactory;
 import chapter_1_ObjectAndDependency.dao.UserDao;
 import chapter_1_ObjectAndDependency.domain.User;
 
@@ -14,7 +13,7 @@ public class UserDaoTest {
 	public static void main(String[]args)throws ClassNotFoundException, SQLException{
 		
 		
-		ApplicationContext context = new AnnotationConfigApplicationContext(CountingDaoFactory.class);
+		ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
 		
 		UserDao dao = context.getBean("userDao",UserDao.class);
 		
