@@ -464,5 +464,20 @@ public class UserDao {
 	ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
 ~~~
 
+* Kind of xml
+  - We also use a ClassPathXmlApplicationContext
+  - Path of applicationContext.xml
 
+~~~java
+	src - main - java - chapter1 - dao - applicationContext.xml
+					   - UserDao.class
+					   - .....
+	
+	1. GenericXmlApplicationContext
+		new GenericXmlApplicationContext("chapter1.dao.applicationContext.xml")
+
+	2. ClassPathXmlApplicationContext
+		new ClassPathXmlApplicationContext("applicationContext.xml",UserDao.class)
+~~~
+	
 
