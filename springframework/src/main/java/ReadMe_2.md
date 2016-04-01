@@ -470,8 +470,8 @@ public class UserDao {
 
 ~~~java
 	src - main - java - chapter1 - dao - applicationContext.xml
-					   - UserDao.class
-					   - .....
+					     - UserDao.class
+					     - .....
 	
 	1. GenericXmlApplicationContext
 		new GenericXmlApplicationContext("chapter1.dao.applicationContext.xml")
