@@ -431,5 +431,32 @@ public class UserDao {
 	</bean>
 	~~~
 
+#### 8_2. To use a ApplicationContext.xml
+
+
+* applicationContext.xml
+
+~~~xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+								http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<bean id="userDao" class="chapter_1_ObjectAndDependency.dao.UserDao">
+		<property name="connectionMaker" ref="connectionMaker"/>
+	</bean>
+	
+	<bean id="connectionMaker" class="chapter_1_ObjectAndDependency.dao.CountingConnectionMaker">
+		<property name="countingConnectionMaker" ref="realConnectionMaker"/>
+	</bean>
+	
+	<bean id="realConnectionMaker" class="chapter_1_ObjectAndDependency.dao.NConnectionMaker">
+	</bean>
+	
+</beans>
+			
+~~~
+
 
 
