@@ -114,3 +114,84 @@ public class UserDaoTest {
 		JUnitCore.main("chapter_2_Test.test.UserDaoTest");
 	}
 ~~~
+
+## 3. Junit for developer
+
+#### 3_1. How to execute Junit
+
+* Eclipse
+
+
+	~~~java
+	1. [Run as] -> [Junit Test]
+	2. Alt + Shift + x + t
+	~~~
+
+#### 3_2. Consistency of test result
+
+* To add deleteAll() and getCount()
+	- UserDao.class - deleteAll(), getCount()
+	
+~~~java
+	public void deleteAll() throws SQLException{
+		Connection c = dataSource.getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("delete from users");
+		
+		ps.executeUpdate();
+		
+		ps.close();
+		c.close();
+	}
+
+	public int getCount() throws SQLException{
+		
+		Connection c= dataSource.getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("select count(*) from users");
+		
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		
+		int count = rs.getInt(1);
+		
+		rs.close();
+		ps.close();
+		c.close();
+		
+		return count;
+		
+	}
+~~~
+
+* Test of deleteAll() and getCount()
+	- UserDaoTest.class
+	
+	~~~java
+	@Test
+	public void addAndGet() throws SQLException, ClassNotFoundException{	
+		ApplicationContext context = new GenericXmlApplicationContext("chapter_2_Test/dao/applicationContext.xml");
+		
+		UserDao dao = context.getBean("userDao",UserDao.class);
+		
+		dao.deleteAll();
+		assertThat(dao.getCount(),is(0));
+		
+		User user = new User();
+		user.setId("Kyle2");
+		user.setName("Hee2");
+		user.setPassword("11112");
+		
+		dao.add(user);
+		assertThat(dao.getCount(),is(1));
+		
+		User user2 = dao.get(user.getId());
+		
+		assertThat(user2.getName(),is(user.getName()));
+		assertThat(user2.getPassword(),is(user.getPassword()));
+		
+	}
+	~~~
+
+
+
