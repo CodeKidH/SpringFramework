@@ -266,3 +266,35 @@ public class UserDaoTest {
 	}
 	~~~
 
+* To improve a addAndGet() test
+
+~~~java
+	@Test
+	public void addAndGet() throws SQLException, ClassNotFoundException{	
+		ApplicationContext context = new GenericXmlApplicationContext("chapter_2_Test/dao/applicationContext.xml");
+		
+		UserDao dao = context.getBean("userDao",UserDao.class);
+		User user1 = new User("James","hee","spring");
+		User user2 = new User("Kyle","jeong","spring1");
+		
+		dao.deleteAll();
+		assertThat(dao.getCount(),is(0));
+		
+		dao.add(user1);
+		dao.add(user2);
+		assertThat(dao.getCount(),is(2));
+		
+		User userget1 = dao.get(user1.getId());
+		assertThat(userget1.getId(),is(user1.getId()));
+		
+		User userget2 = dao.get(user2.getId());
+		assertThat(userget2.getId(),is(user2.getId()));
+	}
+~~~
+
+* Exception test for get()
+
+		What if value of ID is null?
+		1. It would return null
+		2. Exception occur
+	
