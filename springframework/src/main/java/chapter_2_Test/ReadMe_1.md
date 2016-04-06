@@ -174,6 +174,7 @@ public class UserDaoTest {
 		
 		UserDao dao = context.getBean("userDao",UserDao.class);
 		
+		//add
 		dao.deleteAll();
 		assertThat(dao.getCount(),is(0));
 		
@@ -181,7 +182,8 @@ public class UserDaoTest {
 		user.setId("Kyle2");
 		user.setName("Hee2");
 		user.setPassword("11112");
-		
+
+		//add
 		dao.add(user);
 		assertThat(dao.getCount(),is(1));
 		
