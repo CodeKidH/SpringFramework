@@ -195,5 +195,74 @@ public class UserDaoTest {
 	}
 	~~~
 
+#### 3_3. Comprehensive test
 
+* getCount() test
+
+	- User.class
+	~~~java
+		public class User {
+			
+			String id;
+			String name;
+			String password;
+		
+			public User(String id, String name, String password){
+				this.id = id;
+				this.name = name;
+				this.password = password;
+			}
+			
+			public User(){
+				
+			}
+			
+			public String getId() {
+				return id;
+			}
+			public void setId(String id) {
+				this.id = id;
+			}
+			public String getName() {
+				return name;
+			}
+			public void setName(String name) {
+				this.name = name;
+			}
+			public String getPassword() {
+				return password;
+			}
+			public void setPassword(String password) {
+				this.password = password;
+			} 
+		}
+
+	~~~
+	- UserDaoTest.class
+	~~~java
+	@Test
+	public void count() throws SQLException, ClassNotFoundException{
+		
+		ApplicationContext context = new GenericXmlApplicationContext("chapter_2_Test/dao/applicationContext.xml");
+		
+		UserDao dao = context.getBean("userDao",UserDao.class);
+		
+		User user1 = new User("James","hee","spring");
+		User user2 = new User("James1","hee1","spring1");
+		User user3 = new User("James2","hee2","spring2");
+		
+		dao.deleteAll();
+		assertThat(dao.getCount(),is(0));
+		
+		dao.add(user1);
+		assertThat(dao.getCount(),is(1));
+		
+		dao.add(user2);
+		assertThat(dao.getCount(),is(2));
+		
+
+		dao.add(user3);
+		assertThat(dao.getCount(),is(3));
+	}
+	~~~
 
