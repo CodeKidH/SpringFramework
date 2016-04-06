@@ -298,3 +298,21 @@ public class UserDaoTest {
 		1. It would return null
 		2. Exception occur
 	
+	- UserDaoTest.class
+	~~~java
+	@Test(expected=EmptyResultDataAccessException.class)//Specify a class which exception occur
+	public void getUserFailure() throws SQLException, ClassNotFoundException{
+		
+		ApplicationContext context = new GenericXmlApplicationContext("chapter_2_Test/dao/applicationContext.xml");
+		
+		UserDao dao = context.getBean("userDao",UserDao.class);
+		dao.deleteAll();
+		assertThat(dao.getCount(),is(0));
+		
+		dao.get("unknown");
+	}
+	~~~
+
+	- expected
+		1. If @Test has a expected, it will return fail when you pass the test
+		
