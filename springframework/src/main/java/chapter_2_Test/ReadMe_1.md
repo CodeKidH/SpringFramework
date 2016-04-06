@@ -315,4 +315,40 @@ public class UserDaoTest {
 
 	- expected
 		1. If @Test has a expected, it will return fail when you pass the test
+	
+
+* Modify a code to succeed test	
+
+	- UserDao.class - get()
+	
+	~~~java
+	public User get(String id)throws ClassNotFoundException, SQLException{
 		
+		
+		this.c = dataSource.getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
+		ps.setString(1,id);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		User user = null;
+		
+		if(rs.next()){
+			user = new User();
+			user.setId(rs.getString("id"));
+			user.setName(rs.getString("name"));
+			user.setPassword(rs.getString("password"));
+		}
+		rs.close();
+		ps.close();
+		c.close();
+		
+		if(user == null){
+			throw new EmptyResultDataAccessException(1);
+		}
+		
+		return user;
+		
+	}
+	~~~
