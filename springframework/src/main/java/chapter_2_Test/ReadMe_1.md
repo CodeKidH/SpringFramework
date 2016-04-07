@@ -538,7 +538,7 @@ public class UserDaoTest {
 	@ContextConfiguration(locations="/chapter_2_Test/dao/applicationContext.xml")// Define a location of applicationContext
 	public class UserDaoTest {
 	
-	@Autowired
+	@Autowired 
 	private ApplicationContext context;
 	
 	private UserDao dao;
@@ -583,4 +583,23 @@ public class UserDaoTest {
 	- Objects of UserDaoTest is different
 	- Execution speed increase(0.23, 0.10,0.07)
 	
+* Context sharing of test class
 
+		Spring provide context sharing for classes
+		
+	~~~java
+	@RunWith(SpringJUnit4ClassRunner.class)
+	@ContextConfiguration(locations="/chapter_2_Test/dao/applicationContext.xml")
+	public class UserDaoTest {
+	
+	@RunWith(SpringJUnit4ClassRunner.class)
+	@ContextConfiguration(locations="/chapter_2_Test/dao/applicationContext.xml")
+	public class GroupDaoTest {
+	~~~
+
+* Autowired
+
+		@Autowired can be used to DI
+		
+		1. Context framework search for bean which same name in Context
+		2. We don't need to use a getBean() or methods
