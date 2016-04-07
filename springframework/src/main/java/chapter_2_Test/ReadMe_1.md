@@ -526,5 +526,61 @@ public class UserDaoTest {
 	
 	~~~
 
+## 4. Spring test
+
+####4_1. Testing for applicationContext
+
+* Test contextframework of spring
+
+	- UserDaoTest.class
+	~~~java
+	@RunWith(SpringJUnit4ClassRunner.class)// Junit's function of extension 
+	@ContextConfiguration(locations="/chapter_2_Test/dao/applicationContext.xml")// Define a location of applicationContext
+	public class UserDaoTest {
+	
+	@Autowired
+	private ApplicationContext context;
+	
+	private UserDao dao;
+	private User user1;
+	private User user2;
+	private User user3;
+	
+	
+	@Before	
+	public void setUp(){
+		
+		this.dao = this.context.getBean("userDao",UserDao.class);
+		
+		this.user1 = new User("James","hee","spring");
+		this.user2 = new User("Kyle","jeong","spring1");
+		this.user3 = new User("Tom","min","spring2");
+	}
+	~~~
+
+* Context Sharing of test method
+
+	- To check
+	~~~java
+	@Before
+	public void setUp(){
+		System.out.println(this.context);
+		System.out.println(this);
+	}
+	~~~
+	
+	- Result
+	~~~java
+	.org.springframework.context.support.GenericApplicationContext@3498ed: 
+	chapter_2_Test.test.UserDaoTest@17c1bced
+	.org.springframework.context.support.GenericApplicationContext@3498ed: 
+	chapter_2_Test.test.UserDaoTest@5223e5ee
+	.org.springframework.context.support.GenericApplicationContext@3498ed: 
+	chapter_2_Test.test.UserDaoTest@636be97
+	~~~
+	
+	- All of the Context objects is same
+	- Objects of UserDaoTest is different
+	- Execution speed increase(0.23, 0.10,0.07)
 	
 
