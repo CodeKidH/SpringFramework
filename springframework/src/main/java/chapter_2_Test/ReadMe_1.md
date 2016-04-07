@@ -679,10 +679,13 @@ public class UserDaoTest {
 	~~~
 
 #### 4_2 DI and Test
+	
 
 	We can make a test DataSource in the test code
 	
-	- UserDaoTest.class
+
+* DI by test code
+ 	- UserDaoTest.class
 	
 	~~~java
 	@RunWith(SpringJUnit4ClassRunner.class)
@@ -719,12 +722,15 @@ public class UserDaoTest {
 		
 	~~~
 
+
 	- UserDao.class
+
 	~~~java
 	public void setDataSource(DataSource dataSource){
 		this.dataSource = dataSource;
 	}
 	~~~
+
 	~~~java
 	@DirtiesContext : @DirtiesContext give a modified status of class to Test framework
 	~~~
