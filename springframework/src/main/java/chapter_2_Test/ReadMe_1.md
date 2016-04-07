@@ -477,7 +477,54 @@ public class UserDaoTest {
 
 
 	~~~
+
+* fixture
+
+		fixture : We need information or objects to test, These information or objects we call it fixture
 	
+		dao == fixture
+		User's object == fixture
+	
+
+	- UserDaoTest.class
+	
+	~~~java
+	private UserDao dao;
+	private User user1;
+	private User user2;
+	private User user3;
+	
+	
+	@Before
+	public void setUp(){
+		ApplicationContext context = new GenericXmlApplicationContext("chapter_2_Test/dao/applicationContext.xml");
+		
+		this.dao = context.getBean("userDao",UserDao.class);
+		
+		this.user1 = new User("James","hee","spring");
+		this.user2 = new User("Kyle","jeong","spring1");
+		this.user3 = new User("Tom","min","spring2");
+	}
+	
+	@Test
+	public void addAndGet() throws SQLException, ClassNotFoundException{	
+		
+		
+		dao.deleteAll();
+		assertThat(dao.getCount(),is(0));
+		
+		dao.add(user1);
+		dao.add(user2);
+		assertThat(dao.getCount(),is(2));
+		
+		User userget1 = dao.get(user1.getId());
+		assertThat(userget1.getId(),is(user1.getId()));
+		
+		User userget2 = dao.get(user2.getId());
+		assertThat(userget2.getId(),is(user2.getId()));
+	}
+	
+	~~~
 
 	
 
