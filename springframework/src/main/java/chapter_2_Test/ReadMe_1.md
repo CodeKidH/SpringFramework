@@ -603,3 +603,77 @@ public class UserDaoTest {
 		
 		1. Context framework search for bean which same name in Context
 		2. We don't need to use a getBean() or methods
+
+	- UserDaoTest.class
+	~~~java
+	@RunWith(SpringJUnit4ClassRunner.class)
+	@ContextConfiguration(locations="/chapter_2_Test/dao/applicationContext.xml")
+	public class UserDaoTest {
+	
+	@Autowired
+	private ApplicationContext context;
+	
+	@Autowired
+	UserDao dao;
+	
+	private User user1;
+	private User user2;
+	private User user3;
+	
+	
+	@Before	
+	public void setUp(){
+		
+		
+		this.user1 = new User("James","hee","spring");
+		this.user2 = new User("Kyle","jeong","spring1");
+		this.user3 = new User("Tom","min","spring2");
+		
+		System.out.println(this.context);
+		System.out.println(this);
+	}
+	~~~
+	- UserDao.class
+	~~~java
+	public class UserDao {
+	
+	@Autowired
+	private DataSource dataSource;
+	private Connection c;
+	private User user;
+	
+	
+	public void add(User user)throws ClassNotFoundException, SQLException{
+		
+		Connection c = dataSource.getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
+		ps.setString(1,user.getId());
+		ps.setString(2,user.getName());
+		ps.setString(3,user.getPassword());
+		
+		ps.executeUpdate();
+		
+		ps.close();
+		c.close();
+	}
+	~~~
+	- applicationContext.xml
+	~~~xml
+	<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+								http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost/test"/>
+		<property name="username" value="root"/>
+		<property name="password" value="1111"/>
+	</bean>
+	
+	<bean id="userDao" class="chapter_2_Test.dao.UserDao"/>
+	
+	</beans>
+	~~~
