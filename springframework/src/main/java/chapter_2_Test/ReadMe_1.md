@@ -352,3 +352,104 @@ public class UserDaoTest {
 		
 	}
 	~~~
+
+#### 3_4. Test leads development
+
+* To think of get() Exception test development
+
+~~~java
+	1. Normal development process
+		UserDao modify ------> Test
+
+	2. In get() Exception case
+		Test -------> UserDao modify
+~~~
+
+* TDD(Test driven development)
+
+
+		TDD : We don't make a code which was failed in testing
+
+#### 3_5 Improving Test code
+	
+	Repeated code removal in Test Code
+
+
+* @Before
+	- @Before is provided by Junit
+	- It will be started first, before @Test is started 
+	
+	
+	- UserDaoTest.class
+	~~~java
+	private UserDao dao;
+	
+	@Before
+	public void setUp(){
+		ApplicationContext context = new GenericXmlApplicationContext("chapter_2_Test/dao/applicationContext.xml");
+		
+		this.dao = context.getBean("userDao",UserDao.class);
+	}
+	
+	@Test
+	public void addAndGet() throws SQLException, ClassNotFoundException{	
+		
+		User user1 = new User("James","hee","spring");
+		User user2 = new User("Kyle","jeong","spring1");
+		
+		dao.deleteAll();
+		assertThat(dao.getCount(),is(0));
+		
+		dao.add(user1);
+		dao.add(user2);
+		assertThat(dao.getCount(),is(2));
+		
+		User userget1 = dao.get(user1.getId());
+		assertThat(userget1.getId(),is(user1.getId()));
+		
+		User userget2 = dao.get(user2.getId());
+		assertThat(userget2.getId(),is(user2.getId()));
+	}
+	
+	@Test
+	public void count() throws SQLException, ClassNotFoundException{
+		
+		
+		
+		User user1 = new User("James","hee","spring");
+		User user2 = new User("James1","hee1","spring1");
+		User user3 = new User("James2","hee2","spring2");
+		
+		dao.deleteAll();
+		assertThat(dao.getCount(),is(0));
+		
+		dao.add(user1);
+		assertThat(dao.getCount(),is(1));
+		
+		dao.add(user2);
+		assertThat(dao.getCount(),is(2));
+		
+
+		dao.add(user3);
+		assertThat(dao.getCount(),is(3));
+	}
+	
+	public static void main(String[]args)throws ClassNotFoundException, SQLException{
+		
+		JUnitCore.main("chapter_2_Test.test.UserDaoTest");
+	}
+	
+	@Test(expected=EmptyResultDataAccessException.class)
+	public void getUserFailure() throws SQLException, ClassNotFoundException{
+		
+		
+		dao.deleteAll();
+		assertThat(dao.getCount(),is(0));
+		
+		dao.get("unknown");
+	}
+	~~~
+	
+
+	
+
