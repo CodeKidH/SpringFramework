@@ -677,3 +677,86 @@ public class UserDaoTest {
 	
 	</beans>
 	~~~
+
+#### 4_2 DI and Test
+
+	We can make a test DataSource in the test code
+	
+	- UserDaoTest.class
+	
+	~~~java
+	@RunWith(SpringJUnit4ClassRunner.class)
+	@ContextConfiguration(locations="/chapter_2_Test/dao/applicationContext.xml")
+	@DirtiesContext
+	public class UserDaoTest {
+	
+		@Autowired
+		private ApplicationContext context;
+		
+		@Autowired
+		UserDao dao;
+		
+		private User user1;
+		private User user2;
+		private User user3;
+		
+		
+		@Before	
+		public void setUp(){
+			
+			
+			this.user1 = new User("James","hee","spring");
+			this.user2 = new User("Kyle","jeong","spring1");
+			this.user3 = new User("Tom","min","spring2");
+			
+			System.out.println(this.context);
+			System.out.println(this);
+			
+			
+			DataSource dataSource = new SingleConnectionDataSource("jdbc:mysql://localhost/test","root","1111",true);
+			dao.setDataSource(dataSource);
+		}
+		
+	~~~
+
+	- UserDao.class
+	~~~java
+	public void setDataSource(DataSource dataSource){
+		this.dataSource = dataSource;
+	}
+	~~~
+	~~~java
+	@DirtiesContext : @DirtiesContext give a modified status of class to Test framework
+	~~~
+
+* DI test without container
+
+		It become a simple test
+		
+	- UserDaoTest.class
+	
+	~~~java
+	public class UserDaoTest {
+	
+	UserDao dao;
+	
+	private User user1;
+	private User user2;
+	private User user3;
+	
+	
+	@Before	
+	public void setUp(){
+		
+		
+		this.user1 = new User("James","hee","spring");
+		this.user2 = new User("Kyle","jeong","spring1");
+		this.user3 = new User("Tom","min","spring2");
+		
+		
+		dao = new UserDao();
+		DataSource dataSource = new SingleConnectionDataSource("jdbc:mysql://localhost/test","root","1111",true);
+		dao.setDataSource(dataSource);
+	}
+	~~~
+	
