@@ -450,6 +450,34 @@ public class UserDaoTest {
 	}
 	~~~
 	
+	- Junit Simple Process
+	~~~java
+		1. Junit search for all of the method attached @Test
+		
+		2. Junit make a Object to test a test method
+		
+		3. @Before method is started
+		
+		4. Junit call a one @Test and save it
+		
+		5. @After method is started
+		
+		6. Repeat a process from 2 to 5
+		
+		7. Junit hand all of the test over to us
+		
+
+		Junit -------------------->  @Test
+			(New Object)
+		      -------------------->  @Test
+		      	(New Object)
+		      	.
+		      	.
+		      	.
+
+
+	~~~
+	
 
 	
 
