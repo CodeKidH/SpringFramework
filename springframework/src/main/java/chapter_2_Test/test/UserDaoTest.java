@@ -5,33 +5,53 @@ import static org.junit.Assert.assertThat;
 
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import chapter_2_Test.dao.UserDao;
 import chapter_2_Test.domain.User;
 
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations="/chapter_2_Test/dao/applicationContext.xml")
+//@DirtiesContext
 public class UserDaoTest {
 	
-	private UserDao dao;
+	/*@Autowired
+	private ApplicationContext context;*/
+	
+	//@Autowired
+	UserDao dao;
+	
 	private User user1;
 	private User user2;
 	private User user3;
 	
 	
-	@Before
+	@Before	
 	public void setUp(){
-		ApplicationContext context = new GenericXmlApplicationContext("chapter_2_Test/dao/applicationContext.xml");
 		
-		this.dao = context.getBean("userDao",UserDao.class);
 		
 		this.user1 = new User("James","hee","spring");
 		this.user2 = new User("Kyle","jeong","spring1");
 		this.user3 = new User("Tom","min","spring2");
+		
+		//System.out.println(this.context);
+		//System.out.println(this);
+		
+		dao = new UserDao();
+		DataSource dataSource = new SingleConnectionDataSource("jdbc:mysql://localhost/test","root","1111",true);
+		dao.setDataSource(dataSource);
 	}
 	
 	@Test

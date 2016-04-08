@@ -7,18 +7,20 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import chapter_2_Test.domain.User;
 
 public class UserDao {
 	
+	@Autowired
 	private DataSource dataSource;
 	private Connection c;
 	private User user;
 	
 	public void setDataSource(DataSource dataSource){
-		this.dataSource = dataSource; 
+		this.dataSource = dataSource;
 	}
 	
 	public void add(User user)throws ClassNotFoundException, SQLException{
