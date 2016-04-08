@@ -848,3 +848,55 @@ public class UserDaoTest {
 	hasItem() ==  Creates a matcher for Iterables that only matches when a single pass over the examined Iterable yields at least 	one item that is equal to the specified item.
 	~~~
 	
+* Spring context test
+
+		Is it true Spring context was made only one in test case?
+	
+	- junit.xml
+	~~~xml
+	<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.springframework.org/schema/beans
+								http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+		
+		
+	</beans>
+	~~~
+	
+	- JunitTest.class
+	~~~java
+	@RunWith(SpringJUnit4ClassRunner.class)
+	@ContextConfiguration
+	public class JunitTest {
+		
+		@Autowired
+		ApplicationContext context;
+		
+		static Set<JunitTest> testObjects = new HashSet<JunitTest>();
+		static ApplicationContext contextObject = null;
+		
+		@Test
+		public void test1(){
+			assertThat(testObjects,not(hasItem(this)) );
+			testObjects.add(this);
+		}
+		
+		@Test
+		public void test2(){
+			assertThat(testObjects,not(hasItem(this)) );
+			testObjects.add(this);
+		}
+		
+		@Test
+		public void test3(){
+			assertThat(testObjects,not(hasItem(this)) );
+			testObjects.add(this);
+			
+			assertThat(contextObject, either(is(nullValue())).or(is(this.contextObject)));
+			contextObject = this.context;
+		}
+	
+	}
+	~~~
+	
