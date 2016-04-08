@@ -766,3 +766,85 @@ public class UserDaoTest {
 	}
 	~~~
 	
+## 5. Spring by learning Test
+
+#### 5_1. Examplt of learning test
+
+* Junit test object
+
+	Junit always make a new Object when they start a @test?
+	
+	- JunitTest.class
+	~~~java
+	import static org.hamcrest.CoreMatchers.is;
+	import static org.hamcrest.CoreMatchers.not;
+	import static org.hamcrest.CoreMatchers.sameInstance;
+	import static org.junit.Assert.assertThat;
+	
+	import org.junit.Test;
+	
+	public class JunitTest {
+		
+		static JunitTest testObject;
+		
+		@Test
+		public void test1(){
+			assertThat(this, is(not(sameInstance(testObject))));
+			testObject = this;
+		}
+		
+		@Test
+		public void test2(){
+			assertThat(this, is(not(sameInstance(testObject))));
+			testObject = this;
+		}
+		
+		@Test
+		public void test3(){
+			assertThat(this, is(not(sameInstance(testObject))));
+			testObject = this;
+		}
+	
+	}
+	~~~
+	
+	~~~java
+	
+	not() == deny the result 
+	is(not()) == It is not same = true
+	sameInstance() =  Creates a matcher that matches only when the examined object is the same instance as the specified target 		object.
+	
+	What if It is same between first object and last object?
+	~~~
+	
+	- Improving JunitTest
+	~~~java
+	public class JunitTest {
+	
+		static Set<JunitTest> testObjects = new HashSet<JunitTest>();
+		
+		@Test
+		public void test1(){
+			assertThat(testObjects,not(hasItem(this)) );
+			testObjects.add(this);
+		}
+		
+		@Test
+		public void test2(){
+			assertThat(testObjects,not(hasItem(this)) );
+			testObjects.add(this);
+		}
+		
+		@Test
+		public void test3(){
+			assertThat(testObjects,not(hasItem(this)) );
+			testObjects.add(this);
+		}
+	
+	}
+	~~~
+	
+	~~~java
+	hasItem() ==  Creates a matcher for Iterables that only matches when a single pass over the examined Iterable yields at least 	one item that is equal to the specified item.
+	~~~
+	
