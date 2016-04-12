@@ -1,4 +1,4 @@
-package chapter_2_Test.test;
+package chapter_3_Template.test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.CoreMatchers.nullValue;
