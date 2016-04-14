@@ -12,5 +12,91 @@
 #### 1_1. UserDao has a Exception
 
 * Modify Exception
+    
+~~~java
+    public void deleteAll() throws SQLException{
+		
+		
+		Connection c = null;
+		PreparedStatement ps = null;
+				
+		try{
+
+			// This part might be a error possibility
+			c = dataSource.getConnection();
+			ps = c.prepareStatement("delete from users");
+			ps.executeUpdate();
+			
+		}catch(SQLException e){
+			throw e;
+			
+		}finally{ // It must be started 
+			if(ps != null){
+				try{
+					ps.close(); // This part also might be a exception
+				}catch(SQLException e){
+					
+				}
+			}
+			if(c!=null){
+				try{
+					c.close();
+				}catch(SQLException e){
+				}
+			}
+		}
+	}
+~~~
+
+* Retreive Exception
+
+~~~java
+public int getCount() throws SQLException{
+		
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try{
+			c= dataSource.getConnection();
+			ps = c.prepareStatement("select count(*) from users");
+			rs = ps.executeQuery();
+			rs.next();
+			return rs.getInt(1);
+		}catch(SQLException e){
+			throw e;
+		}finally{
+			if(rs != null){
+				try{
+					rs.close();
+				}catch(SQLException e){
+					
+				}
+			}
+			if(ps!=null){
+				try{
+					ps.close();
+				}catch(SQLException e){
+					
+				}
+			}
+			if(c != null){
+				try{
+					c.close();
+				}catch(SQLException e){
+					
+				}
+			}
+		}
+		
+	}
+~~~
+
+## 2. Either It was changed or not
+
+#### 2_1. Problem's JDBC try/catch/finally
+
+
+    
 
 
