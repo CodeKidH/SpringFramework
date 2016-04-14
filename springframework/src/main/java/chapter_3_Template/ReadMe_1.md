@@ -108,7 +108,8 @@ public int getCount() throws SQLException{
 	We can use a extended function through a extend 
 	
 	- UserDaoDeleteAll.class
-	~~~
+	
+	~~~java
 	public class UserDaoDeleteAll extends UserDao{
 
 		protected PreparedStatement makeStatement(Connection c)throws SQLException{
@@ -117,4 +118,16 @@ public int getCount() throws SQLException{
 			}
 		}
 	~~~
+	- pros
+		1. If UserDao want to extend its functions, It will do that easily
+		2. UserDao will not be changed unnecessarily
+	
+	- cons
+		1. There is a limit
+		2. We have to make a new class's logic one by one
+
+
+* Apply a Strategy Pattern
+	
+
 
