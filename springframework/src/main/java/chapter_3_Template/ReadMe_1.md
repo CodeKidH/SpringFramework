@@ -96,7 +96,16 @@ public int getCount() throws SQLException{
 
 #### 2_1. Problem's JDBC try/catch/finally
 
+	 try/catch/finally was overlaped in code
 
+#### 2_2. Design Pattern for reuse and separation
+
+	1. We find two parts, changed part and not changed part
+	
     
+* Template Method Pattern
+
+	We can use a extended function through a extend 
+
 
 
