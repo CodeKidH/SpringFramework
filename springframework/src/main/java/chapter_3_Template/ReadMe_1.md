@@ -148,3 +148,59 @@ public int getCount() throws SQLException{
 		5. Close
 
 
+	- StatementStrategy.class
+	~~~java
+	public interface StatementStrategy {
+	
+		PreparedStatement makePreparedStatement(Connection c)throws SQLException;
+	}
+	~~~
+	
+	- DeleteAllStatement.class
+	~~~java
+	public class DeleteAllStatement implements StatementStrategy{
+	
+		public PreparedStatement makePreparedStatement(Connection c)throws SQLException{
+			PreparedStatement ps = c.prepareStatement("delete from users");
+			return ps;
+		}
+	}
+	~~~
+	
+	- UserDao.class
+	~~~java
+	public void deleteAll() throws SQLException{
+		
+		
+		Connection c = null;
+		PreparedStatement ps = null;
+				
+		try{
+			
+			c = dataSource.getConnection();
+			
+			StatementStrategy strategy = new DeleteAllStatement();
+			ps = strategy.makePreparedStatement(c);
+			
+			ps.executeUpdate();
+			
+		}catch(SQLException e){
+			throw e;
+			
+		}finally{
+			if(ps != null){
+				try{
+					ps.close();
+				}catch(SQLException e){
+					
+				}
+			}
+			if(c!=null){
+				try{
+					c.close();
+				}catch(SQLException e){
+				}
+			}
+		}
+	}
+	~~~
