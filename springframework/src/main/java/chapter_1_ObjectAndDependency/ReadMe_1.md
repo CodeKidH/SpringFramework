@@ -119,7 +119,8 @@
   * To separate a overlap code that get a __Connection__
    
  ~~~java
-public void add(User user)throws ClassNotFoundException, SQLException{
+
+	public void add(User user)throws ClassNotFoundException, SQLException{
 		
 		Connection c = getConnection();
 		
@@ -172,91 +173,91 @@ public void add(User user)throws ClassNotFoundException, SQLException{
 
  * abstract class UserDao
  ~~~java
- public abstract class UserDao {
+ 	public abstract class UserDao {
 	
-	public void add(User user)throws ClassNotFoundException, SQLException{
+		public void add(User user)throws ClassNotFoundException, SQLException{
 		
-		Connection c = getConnection();
-		
-		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
-		ps.setString(1,user.getId());
-		ps.setString(2,user.getName());
-		ps.setString(3,user.getPassword());
-		
-		ps.executeUpdate();
-		
-		ps.close();
-		c.close();
-	}
+			Connection c = getConnection();
+			
+			PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
+			ps.setString(1,user.getId());
+			ps.setString(2,user.getName());
+			ps.setString(3,user.getPassword());
+			
+			ps.executeUpdate();
+			
+			ps.close();
+			c.close();
+		}
 	
-	public User get(String id)throws ClassNotFoundException, SQLException{
-		
-		
-		Connection c = getConnection();
-		
-		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
-		ps.setString(1,id);
-		
-		ResultSet rs = ps.executeQuery();
-		rs.next();
-		User user = new User();
-		user.setId(rs.getString("id"));
-		user.setName(rs.getString("name"));
-		user.setPassword(rs.getString("password"));
-		
-		rs.close();
-		ps.close();
-		c.close();
-		
-		return user;
-		
-	}
+		public User get(String id)throws ClassNotFoundException, SQLException{
+			
+			
+			Connection c = getConnection();
+			
+			PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
+			ps.setString(1,id);
+			
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			User user = new User();
+			user.setId(rs.getString("id"));
+			user.setName(rs.getString("name"));
+			user.setPassword(rs.getString("password"));
+			
+			rs.close();
+			ps.close();
+			c.close();
+			
+			return user;
+			
+		}
 	// specifications of code was deleted and method change into abstract
 	// submethod is in charge implementation method
-	public abstract Connection getConnection() throws ClassNotFoundException, SQLException;  
+		public abstract Connection getConnection() throws ClassNotFoundException, SQLException;  
 	
 	
-	public static void main(String[]args)throws ClassNotFoundException, SQLException{
+		public static void main(String[]args)throws ClassNotFoundException, SQLException{
+				
+				UserDao dao = new NUserDao(); // It must be changed to use a Mysql
+				
+				User user = new User();
+				user.setId("Kyle2");
+				user.setName("Hee2");
+				user.setPassword("11112");
+				
+				dao.add(user);
+				
+				User user2 = dao.get(user.getId());
+				
+				System.out.println(user2.getName());
 			
-			UserDao dao = new NUserDao(); // It must be changed to use a Mysql
-			
-			User user = new User();
-			user.setId("Kyle2");
-			user.setName("Hee2");
-			user.setPassword("11112");
-			
-			dao.add(user);
-			
-			User user2 = dao.get(user.getId());
-			
-			System.out.println(user2.getName());
-		
-	}
+		}
 }
 ~~~
 
 * NUserDao.class - Mysql
 
 ~~~java
-public class NUserDao extends UserDao{
-	public Connection getConnection() throws ClassNotFoundException, SQLException{
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/test","root","1111");
-		return c;
+	public class NUserDao extends UserDao{
+		public Connection getConnection() throws ClassNotFoundException, SQLException{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection c = DriverManager.getConnection("jdbc:mysql://localhost/test","root","1111");
+			return c;
+		}
 	}
-}
 ~~~
 
 * DUserDao.class - Oracle
 ~~~java
-public class DUserDao extends UserDao{
-	
-	public Connection getConnection() throws ClassNotFoundException, SQLException{
-		Class.forName("oracle.jdbc.driver.OracleDriver");
-  		Connection c = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl1","HJEONG","1111");
-  		return c;
+	public class DUserDao extends UserDao{
+		
+		public Connection getConnection() throws ClassNotFoundException, SQLException{
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+	  		Connection c = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl1","HJEONG","1111");
+	  		return c;
+		}
 	}
-}
 ~~~
 
 ####**pros**
@@ -278,85 +279,85 @@ public class DUserDao extends UserDao{
 
 * UserDao.class	
 ~~~java
-public class UserDao {
-	
-	private SimpleConnectionMaker simpleConnectionMaker;
-	
-	public UserDao(){
-		simpleConnectionMaker = new SimpleConnectionMaker();
-	}
-	
-	public void add(User user)throws ClassNotFoundException, SQLException{
+	public class UserDao {
 		
-		Connection c = simpleConnectionMaker.getConnection();
+		private SimpleConnectionMaker simpleConnectionMaker;
 		
-		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
-		ps.setString(1,user.getId());
-		ps.setString(2,user.getName());
-		ps.setString(3,user.getPassword());
+		public UserDao(){
+			simpleConnectionMaker = new SimpleConnectionMaker();
+		}
 		
-		ps.executeUpdate();
-		
-		ps.close();
-		c.close();
-	}
-	
-	public User get(String id)throws ClassNotFoundException, SQLException{
-		
-		
-		Connection c = simpleConnectionMaker.getConnection();
-		
-		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
-		ps.setString(1,id);
-		
-		ResultSet rs = ps.executeQuery();
-		rs.next();
-		User user = new User();
-		user.setId(rs.getString("id"));
-		user.setName(rs.getString("name"));
-		user.setPassword(rs.getString("password"));
-		
-		rs.close();
-		ps.close();
-		c.close();
-		
-		return user;
-		
-	}
-	
-	
-	public static void main(String[]args)throws ClassNotFoundException, SQLException{
+		public void add(User user)throws ClassNotFoundException, SQLException{
 			
-			UserDao dao = new UserDao();
+			Connection c = simpleConnectionMaker.getConnection();
 			
+			PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
+			ps.setString(1,user.getId());
+			ps.setString(2,user.getName());
+			ps.setString(3,user.getPassword());
+			
+			ps.executeUpdate();
+			
+			ps.close();
+			c.close();
+		}
+		
+		public User get(String id)throws ClassNotFoundException, SQLException{
+			
+			
+			Connection c = simpleConnectionMaker.getConnection();
+			
+			PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
+			ps.setString(1,id);
+			
+			ResultSet rs = ps.executeQuery();
+			rs.next();
 			User user = new User();
-			user.setId("Kyle2");
-			user.setName("Hee2");
-			user.setPassword("11112");
+			user.setId(rs.getString("id"));
+			user.setName(rs.getString("name"));
+			user.setPassword(rs.getString("password"));
 			
-			dao.add(user);
+			rs.close();
+			ps.close();
+			c.close();
 			
-			User user2 = dao.get(user.getId());
+			return user;
 			
-			System.out.println(user2.getName());
+		}
 		
+		
+		public static void main(String[]args)throws ClassNotFoundException, SQLException{
+				
+				UserDao dao = new UserDao();
+				
+				User user = new User();
+				user.setId("Kyle2");
+				user.setName("Hee2");
+				user.setPassword("11112");
+				
+				dao.add(user);
+				
+				User user2 = dao.get(user.getId());
+				
+				System.out.println(user2.getName());
+			
+		}
 	}
-}
 
 ~~~
 
 * SimpleConnectionMaker.class
 
 ~~~java
-//We don't need a abstract class
-public class SimpleConnectionMaker {
-
-	public Connection getConnection() throws ClassNotFoundException, SQLException{
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/test","root","1111");
-		return c;
+	//We don't need a abstract class
+	public class SimpleConnectionMaker {
+	
+		public Connection getConnection() throws ClassNotFoundException, SQLException{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection c = DriverManager.getConnection("jdbc:mysql://localhost/test","root","1111");
+			return c;
+		}
 	}
-}
 ~~~
 
 ####**pros**
@@ -375,70 +376,70 @@ public class SimpleConnectionMaker {
 * UserDao.class
 
 ~~~java
-public class UserDao {
-	
-	private ConnectionMaker connectionMaker; //We don't need to know specific Class name
-	
-	public UserDao(){
-		connectionMaker = new NConnectionMaker(); //but, We have to fix the problem
-	}
-	
-	public void add(User user)throws ClassNotFoundException, SQLException{
+	public class UserDao {
 		
-		Connection c = connectionMaker.makeConnection(); //If the class will be changed, We don't care 
+		private ConnectionMaker connectionMaker; //We don't need to know specific Class name
 		
-		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
-		ps.setString(1,user.getId());
-		ps.setString(2,user.getName());
-		ps.setString(3,user.getPassword());
+		public UserDao(){
+			connectionMaker = new NConnectionMaker(); //but, We have to fix the problem
+		}
 		
-		ps.executeUpdate();
-		
-		ps.close();
-		c.close();
-	}
-	
-	public User get(String id)throws ClassNotFoundException, SQLException{
-		
-		
-		Connection c = connectionMaker.makeConnection();
-		
-		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
-		ps.setString(1,id);
-		
-		ResultSet rs = ps.executeQuery();
-		rs.next();
-		User user = new User();
-		user.setId(rs.getString("id"));
-		user.setName(rs.getString("name"));
-		user.setPassword(rs.getString("password"));
-		
-		rs.close();
-		ps.close();
-		c.close();
-		
-		return user;
-		
-	}
-	
-	
-	public static void main(String[]args)throws ClassNotFoundException, SQLException{
+		public void add(User user)throws ClassNotFoundException, SQLException{
 			
-			UserDao dao = new UserDao();
+			Connection c = connectionMaker.makeConnection(); //If the class will be changed, We don't care 
 			
+			PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
+			ps.setString(1,user.getId());
+			ps.setString(2,user.getName());
+			ps.setString(3,user.getPassword());
+			
+			ps.executeUpdate();
+			
+			ps.close();
+			c.close();
+		}
+		
+		public User get(String id)throws ClassNotFoundException, SQLException{
+			
+			
+			Connection c = connectionMaker.makeConnection();
+			
+			PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
+			ps.setString(1,id);
+			
+			ResultSet rs = ps.executeQuery();
+			rs.next();
 			User user = new User();
-			user.setId("Kyle2");
-			user.setName("Hee2");
-			user.setPassword("11112");
+			user.setId(rs.getString("id"));
+			user.setName(rs.getString("name"));
+			user.setPassword(rs.getString("password"));
 			
-			dao.add(user);
+			rs.close();
+			ps.close();
+			c.close();
 			
-			User user2 = dao.get(user.getId());
+			return user;
 			
-			System.out.println(user2.getName());
+		}
 		
+		
+		public static void main(String[]args)throws ClassNotFoundException, SQLException{
+				
+				UserDao dao = new UserDao();
+				
+				User user = new User();
+				user.setId("Kyle2");
+				user.setName("Hee2");
+				user.setPassword("11112");
+				
+				dao.add(user);
+				
+				User user2 = dao.get(user.getId());
+				
+				System.out.println(user2.getName());
+			
+		}
 	}
-}
 
 ~~~
 
@@ -446,37 +447,37 @@ public class UserDao {
 
 ~~~java
 
-public interface ConnectionMaker {
-	
-	public Connection makeConnection() throws ClassNotFoundException, SQLException;
-}
+	public interface ConnectionMaker {
+		
+		public Connection makeConnection() throws ClassNotFoundException, SQLException;
+	}
 
 ~~~
 
 * NConnectionMaker.class(implement) -> mysql
 
 ~~~java
-public class NConnectionMaker implements ConnectionMaker{
-	public Connection makeConnection() throws ClassNotFoundException, SQLException{
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/test","root","1111");
-		return c;
+	public class NConnectionMaker implements ConnectionMaker{
+		public Connection makeConnection() throws ClassNotFoundException, SQLException{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection c = DriverManager.getConnection("jdbc:mysql://localhost/test","root","1111");
+			return c;
+		}
 	}
-}
 ~~~
 
 * DConnectionMaker.class(implement) -> Oracle
 
 ~~~java
 
-public class DConnectionMaker implements ConnectionMaker{
-	
-	public Connection makeConnection() throws ClassNotFoundException, SQLException{
-		Class.forName("oracle.jdbc.driver.OracleDriver");
-  		Connection c = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl1","HJEONG","1111");
-  		return c;
+	public class DConnectionMaker implements ConnectionMaker{
+		
+		public Connection makeConnection() throws ClassNotFoundException, SQLException{
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+	  		Connection c = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl1","HJEONG","1111");
+	  		return c;
+		}
 	}
-}
 ~~~
 
 ####**pros**
@@ -493,79 +494,79 @@ public class DConnectionMaker implements ConnectionMaker{
 * UserDao.class
 
 ~~~java
-public class UserDao {
-	
-	private ConnectionMaker connectionMaker; 
-	
-	public UserDao(ConnectionMaker connectionMaker){
-		this.connectionMaker = connectionMaker; 
+	public class UserDao {
+		
+		private ConnectionMaker connectionMaker; 
+		
+		public UserDao(ConnectionMaker connectionMaker){
+			this.connectionMaker = connectionMaker; 
+		}
+		
+		public void add(User user)throws ClassNotFoundException, SQLException{
+			
+			Connection c = connectionMaker.makeConnection(); 
+			
+			PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
+			ps.setString(1,user.getId());
+			ps.setString(2,user.getName());
+			ps.setString(3,user.getPassword());
+			
+			ps.executeUpdate();
+			
+			ps.close();
+			c.close();
+		}
+		
+		public User get(String id)throws ClassNotFoundException, SQLException{
+			
+			
+			Connection c = connectionMaker.makeConnection();
+			
+			PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
+			ps.setString(1,id);
+			
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			User user = new User();
+			user.setId(rs.getString("id"));
+			user.setName(rs.getString("name"));
+			user.setPassword(rs.getString("password"));
+			
+			rs.close();
+			ps.close();
+			c.close();
+			
+			return user;
+			
+		}
 	}
-	
-	public void add(User user)throws ClassNotFoundException, SQLException{
-		
-		Connection c = connectionMaker.makeConnection(); 
-		
-		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
-		ps.setString(1,user.getId());
-		ps.setString(2,user.getName());
-		ps.setString(3,user.getPassword());
-		
-		ps.executeUpdate();
-		
-		ps.close();
-		c.close();
-	}
-	
-	public User get(String id)throws ClassNotFoundException, SQLException{
-		
-		
-		Connection c = connectionMaker.makeConnection();
-		
-		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
-		ps.setString(1,id);
-		
-		ResultSet rs = ps.executeQuery();
-		rs.next();
-		User user = new User();
-		user.setId(rs.getString("id"));
-		user.setName(rs.getString("name"));
-		user.setPassword(rs.getString("password"));
-		
-		rs.close();
-		ps.close();
-		c.close();
-		
-		return user;
-		
-	}
-}
 ~~~
 
 * UserDaoTest.class
 
 ~~~java
-public class UserDaoTest {
-	public static void main(String[]args)throws ClassNotFoundException, SQLException{
+	public class UserDaoTest {
+		public static void main(String[]args)throws ClassNotFoundException, SQLException{
+			
+			//This line decide to DBConnection for UserDao
+			ConnectionMaker connectionMaker = new NConnectionMaker();
+			
+			//Provide Object of ConnectionMaker type with UserDao
+			UserDao dao = new UserDao(connectionMaker);
+			
+			User user = new User();
+			user.setId("Kyle2");
+			user.setName("Hee2");
+			user.setPassword("11112");
+			
+			dao.add(user);
+			
+			User user2 = dao.get(user.getId());
+			
+			System.out.println(user2.getName());
 		
-		//This line decide to DBConnection for UserDao
-		ConnectionMaker connectionMaker = new NConnectionMaker();
-		
-		//Provide Object of ConnectionMaker type with UserDao
-		UserDao dao = new UserDao(connectionMaker);
-		
-		User user = new User();
-		user.setId("Kyle2");
-		user.setName("Hee2");
-		user.setPassword("11112");
-		
-		dao.add(user);
-		
-		User user2 = dao.get(user.getId());
-		
-		System.out.println(user2.getName());
-	
+		}
 	}
-}
 ~~~
 
 ####**pros**
@@ -609,39 +610,39 @@ public class UserDaoTest {
 * DaoFactory.class
 
 ~~~java
-public class DaoFactory {
+	public class DaoFactory {
+		
+		public UserDao userDao(){ //Method of Factory will decide how to make type of UserDao object 
+			ConnectionMaker connectionMaker = new NConnectionMaker();
+			UserDao userDao = new UserDao(connectionMaker);
+			return userDao;
+		}
 	
-	public UserDao userDao(){ //Method of Factory will decide how to make type of UserDao object 
-		ConnectionMaker connectionMaker = new NConnectionMaker();
-		UserDao userDao = new UserDao(connectionMaker);
-		return userDao;
 	}
-
-}
 ~~~
 
 * UserDaoTest.class
 
 ~~~java
-public class UserDaoTest {
-	public static void main(String[]args)throws ClassNotFoundException, SQLException{
+	public class UserDaoTest {
+		public static void main(String[]args)throws ClassNotFoundException, SQLException{
+			
+			
+			UserDao dao = new DaoFactory().userDao();
+			
+			User user = new User();
+			user.setId("Kyle2");
+			user.setName("Hee2");
+			user.setPassword("11112");
+			
+			dao.add(user);
+			
+			User user2 = dao.get(user.getId());
+			
+			System.out.println(user2.getName());
 		
-		
-		UserDao dao = new DaoFactory().userDao();
-		
-		User user = new User();
-		user.setId("Kyle2");
-		user.setName("Hee2");
-		user.setPassword("11112");
-		
-		dao.add(user);
-		
-		User user2 = dao.get(user.getId());
-		
-		System.out.println(user2.getName());
-	
+		}
 	}
-}
 ~~~
 
 * Factory as a blueprint
@@ -656,45 +657,45 @@ public class UserDaoTest {
 
 * FactoryDao.class
 ~~~java
-public class DaoFactory {
+	public class DaoFactory {
+		
+		public UserDao userDao(){
+			return new UserDao(new NConnectionMaker()); //occurence of overlap
+		}
+		
+		public AccountDao accountDao(){
+			return new accountDao(new NConnectinoMaker());//occurence of overlap
+		}
+		
+		public MessageDao messageDao(){
+			return new messageDao(new NConnectinoMaker());//occurence of overlap
+		}
 	
-	public UserDao userDao(){
-		return new UserDao(new NConnectionMaker()); //occurence of overlap
 	}
-	
-	public AccountDao accountDao(){
-		return new accountDao(new NConnectinoMaker());//occurence of overlap
-	}
-	
-	public MessageDao messageDao(){
-		return new messageDao(new NConnectinoMaker());//occurence of overlap
-	}
-
-}
 ~~~
 
 * Improving 
 
 ~~~java
-public class DaoFactory {
+	public class DaoFactory {
+		
+		public UserDao userDao(){
+			return new UserDao(connectionMaker()); 
+		}
+		
+		public AccountDao accountDao(){
+			return new accountDao(connectionMaker());
+		}
+		
+		public MessageDao messageDao(){
+			return new messageDao(connectionMaker());
+		}
+		
+		public ConnectionMaker connectionMaker(){
+			return new NConnectionMaker();
+		}
 	
-	public UserDao userDao(){
-		return new UserDao(connectionMaker()); 
 	}
-	
-	public AccountDao accountDao(){
-		return new accountDao(connectionMaker());
-	}
-	
-	public MessageDao messageDao(){
-		return new messageDao(connectionMaker());
-	}
-	
-	public ConnectionMaker connectionMaker(){
-		return new NConnectionMaker();
-	}
-
-}
 ~~~
 
 #### 4_3. IOC through transfer of right to control
