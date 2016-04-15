@@ -128,6 +128,23 @@ public int getCount() throws SQLException{
 
 
 * Apply a Strategy Pattern
+
+		Some object separate from other object 	
+		and Classes are connected by interface
+
+	~~~java
+		Context ---------------> Strategy <<-------------Astrategy
+					                       <<-------------Bstrategy
+					          
+	1. Context has a fixed operation
+	2. Specific function is extended by using Strategy
+	~~~
 	
+		Context of deleteAll()
+		1. Get a DBConnection
+		2. Call external function to create PreparedStatement << Strategy
+		3. Execute PreparedStatement
+		4. Exception
+		5. Close
 
 
