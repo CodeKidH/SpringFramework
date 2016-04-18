@@ -342,5 +342,65 @@ public int getCount() throws SQLException{
 
 		1. Defines a class + create a object
 		2. Anonymous inner class doesn't have a own type
+		
 		new Interface's name(){class context};
+
+	- add()
+	~~~java
+	public void add(final User user)throws ClassNotFoundException, SQLException{
+		
+		StatementStrategy st = new StatementStrategy(){
+			
+			public PreparedStatement makePreparedStatement(Connection c)throws SQLException{
+				
+				PreparedStatement ps = c.prepareStatement("insert into users(id,name,password) values(?,?,?)");
+				ps.setString(1, user.getId());
+				ps.setString(2, user.getName());
+				ps.setString(3, user.getPassword());
+				
+				return ps;
+			}
+		};
+		
+		jdbcContextWithStatementStrategy(st);
+		
+	}
+	~~~
 	
+	- add()_2
+	~~~java
+	public void add(final User user)throws ClassNotFoundException, SQLException{
+		jdbcContextWithStatementStrategy(
+			 new StatementStrategy(){
+				
+				public PreparedStatement makePreparedStatement(Connection c)throws SQLException{
+					
+					PreparedStatement ps = c.prepareStatement("insert into users(id,name,password) values(?,?,?)");
+					ps.setString(1, user.getId());
+					ps.setString(2, user.getName());
+					ps.setString(3, user.getPassword());
+					
+					return ps;
+				}
+			}
+		
+		);
+	}	
+	~~~
+	
+	- deleteAll()
+	~~~java
+	public void deleteAll() throws SQLException{
+		
+		jdbcContextWithStatementStrategy(
+				
+				new StatementStrategy(){
+						public PreparedStatement makePreparedStatement(Connection c)throws SQLException{
+							return c.prepareStatement("delete from users");
+						}
+							
+				}
+		);
+		
+	}
+	~~~
