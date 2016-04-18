@@ -294,4 +294,53 @@ public int getCount() throws SQLException{
 	There are some problems
 	
 	1. We have to make a StatementStrategy class each DAO Method
-	2. 
+	2. If there is a additional information, like a User, We will have to make a Constructor or Value to get it 
+	
+* Local Class
+	
+		We would be able to solve Num.1 problem
+
+
+	- add()
+	~~~java
+	public void add(final User user)throws ClassNotFoundException, SQLException{
+		
+		class AddStatement implements StatementStrategy{
+			
+			public PreparedStatement makePreparedStatement(Connection c)throws SQLException{
+				
+				PreparedStatement ps = c.prepareStatement("insert into users(id,name,password) values(?,?,?)");
+				ps.setString(1, user.getId());
+				ps.setString(2, user.getName());
+				ps.setString(3, user.getPassword());
+				
+				return ps;
+			}
+		}
+		
+		StatementStrategy st = new AddStatement();
+		jdbcContextWithStatementStrategy(st);
+	}
+	~~~
+	
+	- Nested class
+	~~~java
+		- static class
+		- inner class - member inner class
+			         - local class
+			         - anonymous inner class
+	~~~
+
+	- pros
+		1. good readability
+		2. Local class can access info it need easily
+	
+	- cons
+		1. When Local class use a external parameter, the parameter must defines a final
+
+* Anonymous inner class
+
+		1. Defines a class + create a object
+		2. Anonymous inner class doesn't have a own type
+		new Interface's name(){class context};
+	
