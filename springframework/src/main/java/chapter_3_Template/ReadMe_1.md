@@ -251,4 +251,47 @@ public int getCount() throws SQLException{
 		
 	}
 	~~~
+
+## 3. Optimization of JDBC StrategyPattern
+
+#### 3_1. Additional information
+
+* AddStatement.class
+
+~~~java
+	public class AddStatement implements StatementStrategy{
 	
+		User user;
+		
+		public AddStatement(User user){
+			this.user = user;
+		}
+		
+		public PreparedStatement makePreparedStatement(Connection c)throws SQLException{
+			
+			PreparedStatement ps = c.prepareStatement("insert into users(id,name,password) values(?,?,?)");
+			ps.setString(1, user.getId());
+			ps.setString(2, user.getName());
+			ps.setString(3, user.getPassword());
+			
+			return ps;
+		}
+	}
+~~~
+
+* UserDao.class -> add()
+
+~~~java
+	public void add(User user)throws ClassNotFoundException, SQLException{
+		
+		StatementStrategy st = new AddStatement(user);
+		jdbcContextWithStatementStrategy(st);
+	}
+~~~
+
+#### 3_2. Strategy live with a Client
+
+	There are some problems
+	
+	1. We have to make a StatementStrategy class each DAO Method
+	2. 
