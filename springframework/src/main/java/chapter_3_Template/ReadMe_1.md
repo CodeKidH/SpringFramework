@@ -509,3 +509,109 @@ public int getCount() throws SQLException{
 
 * Bean dependency
 
+	- applicationContext.xml
+	~~~xml
+	<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.springframework.org/schema/beans
+									http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+		
+		<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+			<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+			<property name="url" value="jdbc:mysql://localhost/test"/>
+			<property name="username" value="root"/>
+			<property name="password" value="1111"/>
+		</bean>
+		
+		<bean id="userDao" class="chapter_3_Template.dao.UserDao">
+			<property name="dataSource" ref="dataSource"/>
+			<property name="jdbcContext" ref="jdbcContext"/>
+		</bean>
+		
+		<bean id="jdbcContext" class="chapter_3_Template.dao.JdbcContext">
+			<property name="dataSource" ref="dataSource"/>
+		</bean>
+		
+		
+	</beans>
+	~~~
+	
+	- UserDaoTest.class
+	~~~java
+	@RunWith(SpringJUnit4ClassRunner.class)
+	@ContextConfiguration(locations="/chapter_3_Template/dao/applicationContext.xml")
+	///@DirtiesContext
+	public class UserDaoTest {
+		
+		@Autowired
+		private ApplicationContext context;
+		
+		private UserDao dao;
+		private User user1;
+		private User user2;
+		private User user3;
+		
+		@Before
+		public void setUp(){
+			this.dao = this.context.getBean("userDao", UserDao.class);
+			
+			this.user3 = new User("x","x","x");
+			this.user1 = new User("v","v","v");
+			this.user2 = new User("z","z","z");
+		}
+		
+		@Test
+		public void addAndGet() throws SQLException, ClassNotFoundException{	
+			
+			
+			dao.deleteAll();
+			assertThat(dao.getCount(),is(0));
+			
+			dao.add(user1);
+			dao.add(user2);
+			assertThat(dao.getCount(),is(2));
+			
+			User userget1 = dao.get(user1.getId());
+			assertThat(userget1.getId(),is(user1.getId()));
+			
+			User userget2 = dao.get(user2.getId());
+			assertThat(userget2.getId(),is(user2.getId()));
+		}
+		
+		@Test
+		public void count() throws SQLException, ClassNotFoundException{
+			
+			
+			dao.deleteAll();
+			assertThat(dao.getCount(),is(0));
+			
+			dao.add(user1);
+			assertThat(dao.getCount(),is(1));
+			
+			dao.add(user2);
+			assertThat(dao.getCount(),is(2));
+			
+	
+			dao.add(user3);
+			assertThat(dao.getCount(),is(3));
+		}
+		
+		public static void main(String[]args)throws ClassNotFoundException, SQLException{
+			
+			JUnitCore.main("chapter_3_Template.test.UserDaoTest");
+		}
+		
+		@Test(expected=EmptyResultDataAccessException.class)
+		public void getUserFailure() throws SQLException, ClassNotFoundException{
+			
+			
+			dao.deleteAll();
+			assertThat(dao.getCount(),is(0));
+			
+			dao.get("unknown");
+		}
+	}
+	~~~
+
+
