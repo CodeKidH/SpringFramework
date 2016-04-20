@@ -615,3 +615,59 @@ public int getCount() throws SQLException{
 	~~~
 
 
+#### 4_2. Special DI of JdbcContext
+
+	 UserDao use a JdbcContext by not using a interfce
+	 
+	 Is there a problem?
+
+
+* DI as a Spring Bean
+
+	1. Above a case, Use a IOC
+	2. UserDAO was injected with jdbcContext by using spring
+	So, UserDAO and jdbcContext follow the rule of DI
+	
+	- Why do we make a DI between UserDao and jdbcContext?
+		1. JdbcContext will be singleton bean 
+		2. JdbcCotnext depend on other bean through DI
+
+* Hand-operated DI
+	
+	- There are two ways to use a JdbcContext
+		1. To use a Spring bean
+		2. Hand-operated DI in UserDAO
+
+
+	- applicationContext.xml
+	~~~xml
+	<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.springframework.org/schema/beans
+									http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+		
+		<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+			<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+			<property name="url" value="jdbc:mysql://localhost/test"/>
+			<property name="username" value="root"/>
+			<property name="password" value="1111"/>
+		</bean>
+		
+		<bean id="userDao" class="chapter_3_Template.dao.UserDao">
+			<property name="dataSource" ref="dataSource"/>
+		</bean>
+	</beans>
+	~~~
+	
+	- UserDao.class
+	~~~java
+	public void setDataSource(DataSource dataSource){ //setterMethod, create a jdbcContext and DI
+		
+		this.jdbcContext = new JdbcContext(); // Create a jdbcContext
+		this.jdbcContext.setDataSource(dataSource); //DI
+		
+		this.dataSource = dataSource; //for other method that not apply jdbcContext
+	}	
+	~~~
+
