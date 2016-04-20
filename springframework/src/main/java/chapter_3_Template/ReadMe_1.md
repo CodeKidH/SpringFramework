@@ -624,9 +624,9 @@ public int getCount() throws SQLException{
 
 * DI as a Spring Bean
 
-	1. Above a case, Use a IOC
-	2. UserDAO was injected with jdbcContext by using spring
-	So, UserDAO and jdbcContext follow the rule of DI
+		Above a case, Use a IOC
+		UserDAO was injected with jdbcContext by using spring
+		So, UserDAO and jdbcContext follow the rule of DI
 	
 	- Why do we make a DI between UserDao and jdbcContext?
 		1. JdbcContext will be singleton bean 
