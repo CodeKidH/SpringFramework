@@ -22,36 +22,26 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import chapter_3_Template.dao.UserDao;
 import chapter_3_Template.domain.User;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations="/chapter_2_Test/dao/applicationContext.xml")
-//@DirtiesContext
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="/chapter_3_Template/dao/applicationContext.xml")
+///@DirtiesContext
 public class UserDaoTest {
 	
-	/*@Autowired
-	private ApplicationContext context;*/
+	@Autowired
+	private ApplicationContext context;
 	
-	//@Autowired
-	UserDao dao;
-	
+	private UserDao dao;
 	private User user1;
 	private User user2;
 	private User user3;
 	
-	
-	@Before	
+	@Before
 	public void setUp(){
+		this.dao = this.context.getBean("userDao", UserDao.class);
 		
-		
-		this.user1 = new User("James","hee","spring");
-		this.user2 = new User("Kyle","jeong","spring1");
-		this.user3 = new User("Tom","min","spring2");
-		
-		//System.out.println(this.context);
-		//System.out.println(this);
-		
-		dao = new UserDao();
-		DataSource dataSource = new SingleConnectionDataSource("jdbc:mysql://localhost/test","root","1111",true);
-		dao.setDataSource(dataSource);
+		this.user3 = new User("x","x","x");
+		this.user1 = new User("v","v","v");
+		this.user2 = new User("z","z","z");
 	}
 	
 	@Test
