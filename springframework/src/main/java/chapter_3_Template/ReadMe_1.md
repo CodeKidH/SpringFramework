@@ -404,3 +404,281 @@ public int getCount() throws SQLException{
 		
 	}
 	~~~
+
+## 4. Context and DI
+
+#### 4_1. Separation of JdbcContext
+	
+	Other DAO also use a jdbcContextWithStatementStrategy()
+
+* Separation of class
+
+	- JdbcContext.class
+	~~~java
+	public class JdbcContext {
+		
+		private DataSource dataSource;
+		
+		public void setDataSource(DataSource dataSource){
+			this.dataSource = dataSource;
+		}
+		
+		public void workWithStatementStrategy(StatementStrategy stmt)throws SQLException{
+			
+			Connection c = null;
+			PreparedStatement ps = null;
+			
+			try{
+				
+				c = dataSource.getConnection();
+				ps = stmt.makePreparedStatement(c);
+				ps.executeUpdate();
+				
+			}catch(SQLException e){
+				throw e;
+			}finally{
+				if(ps != null){
+					try{
+						ps.close();
+					}catch(SQLException e){
+						
+					}
+				}
+				if(c!=null){
+					try{
+						c.close();
+					}catch(SQLException e){
+						
+					}
+					
+				}
+			}
+		}
+		
+		
+	}
+	~~~
+	
+	- UserDao.class
+	~~~java
+	private DataSource dataSource;
+	private Connection c;
+	private User user;
+	private JdbcContext jdbcContext;
+	
+	public void setDataSource(DataSource dataSource){
+		this.dataSource = dataSource;
+	}
+	
+	public void setJdbcContext(JdbcContext jdbcContext){
+		this.jdbcContext = jdbcContext;
+	}
+	
+	public void add(final User user)throws ClassNotFoundException, SQLException{
+		this.jdbcContext.workWithStatementStrategy(
+			 new StatementStrategy(){
+				
+				public PreparedStatement makePreparedStatement(Connection c)throws SQLException{
+					
+					PreparedStatement ps = c.prepareStatement("insert into users(id,name,password) values(?,?,?)");
+					ps.setString(1, user.getId());
+					ps.setString(2, user.getName());
+					ps.setString(3, user.getPassword());
+					
+					return ps;
+				}
+			}
+		
+		);
+	}
+		public void deleteAll() throws SQLException{
+		
+		this.jdbcContext.workWithStatementStrategy(
+				
+				new StatementStrategy(){
+						public PreparedStatement makePreparedStatement(Connection c)throws SQLException{
+							return c.prepareStatement("delete from users");
+						}
+							
+				}
+		);
+		
+	}
+	
+	~~~
+
+* Bean dependency
+
+	- applicationContext.xml
+	~~~xml
+	<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.springframework.org/schema/beans
+									http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+		
+		<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+			<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+			<property name="url" value="jdbc:mysql://localhost/test"/>
+			<property name="username" value="root"/>
+			<property name="password" value="1111"/>
+		</bean>
+		
+		<bean id="userDao" class="chapter_3_Template.dao.UserDao">
+			<property name="dataSource" ref="dataSource"/>
+			<property name="jdbcContext" ref="jdbcContext"/>
+		</bean>
+		
+		<bean id="jdbcContext" class="chapter_3_Template.dao.JdbcContext">
+			<property name="dataSource" ref="dataSource"/>
+		</bean>
+		
+		
+	</beans>
+	~~~
+	
+	- UserDaoTest.class
+	~~~java
+	@RunWith(SpringJUnit4ClassRunner.class)
+	@ContextConfiguration(locations="/chapter_3_Template/dao/applicationContext.xml")
+	///@DirtiesContext
+	public class UserDaoTest {
+		
+		@Autowired
+		private ApplicationContext context;
+		
+		private UserDao dao;
+		private User user1;
+		private User user2;
+		private User user3;
+		
+		@Before
+		public void setUp(){
+			this.dao = this.context.getBean("userDao", UserDao.class);
+			
+			this.user3 = new User("x","x","x");
+			this.user1 = new User("v","v","v");
+			this.user2 = new User("z","z","z");
+		}
+		
+		@Test
+		public void addAndGet() throws SQLException, ClassNotFoundException{	
+			
+			
+			dao.deleteAll();
+			assertThat(dao.getCount(),is(0));
+			
+			dao.add(user1);
+			dao.add(user2);
+			assertThat(dao.getCount(),is(2));
+			
+			User userget1 = dao.get(user1.getId());
+			assertThat(userget1.getId(),is(user1.getId()));
+			
+			User userget2 = dao.get(user2.getId());
+			assertThat(userget2.getId(),is(user2.getId()));
+		}
+		
+		@Test
+		public void count() throws SQLException, ClassNotFoundException{
+			
+			
+			dao.deleteAll();
+			assertThat(dao.getCount(),is(0));
+			
+			dao.add(user1);
+			assertThat(dao.getCount(),is(1));
+			
+			dao.add(user2);
+			assertThat(dao.getCount(),is(2));
+			
+	
+			dao.add(user3);
+			assertThat(dao.getCount(),is(3));
+		}
+		
+		public static void main(String[]args)throws ClassNotFoundException, SQLException{
+			
+			JUnitCore.main("chapter_3_Template.test.UserDaoTest");
+		}
+		
+		@Test(expected=EmptyResultDataAccessException.class)
+		public void getUserFailure() throws SQLException, ClassNotFoundException{
+			
+			
+			dao.deleteAll();
+			assertThat(dao.getCount(),is(0));
+			
+			dao.get("unknown");
+		}
+	}
+	~~~
+
+
+#### 4_2. Special DI of JdbcContext
+
+	 UserDao use a JdbcContext by not using a interfce
+	 
+	 Is there a problem?
+
+
+* DI as a Spring Bean
+
+		Above a case, Use a IOC
+		UserDAO was injected with jdbcContext by using spring
+		So, UserDAO and jdbcContext follow the rule of DI
+	
+	- Why do we make a DI between UserDao and jdbcContext?
+		1. JdbcContext will be singleton bean 
+		2. JdbcCotnext depend on other bean through DI
+
+* Hand-operated DI
+	
+	- There are two ways to use a JdbcContext
+		1. To use a Spring bean
+		2. Hand-operated DI in UserDAO
+
+
+	- applicationContext.xml
+	~~~xml
+	<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.springframework.org/schema/beans
+									http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+		
+		<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+			<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+			<property name="url" value="jdbc:mysql://localhost/test"/>
+			<property name="username" value="root"/>
+			<property name="password" value="1111"/>
+		</bean>
+		
+		<bean id="userDao" class="chapter_3_Template.dao.UserDao">
+			<property name="dataSource" ref="dataSource"/>
+		</bean>
+	</beans>
+	~~~
+	
+	- UserDao.class
+	~~~java
+	public void setDataSource(DataSource dataSource){ //setterMethod, create a jdbcContext and DI
+		
+		this.jdbcContext = new JdbcContext(); // Create a jdbcContext
+		this.jdbcContext.setDataSource(dataSource); //DI
+		
+		this.dataSource = dataSource; //for other method that not apply jdbcContext
+	}	
+	~~~
+
+## 5. Template and callback
+
+	Template Callback Pattern
+		- Strategy Pattern + Anonymouse class in spiring
+		- Template : Strategy's context
+		- Callback : Object of Anonymouse class
+
+#### 5_1. Operation principle
+
+* Feature of template/callback
+		
