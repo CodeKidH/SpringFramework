@@ -681,4 +681,5 @@ public int getCount() throws SQLException{
 #### 5_1. Operation principle
 
 * Feature of template/callback
-		
+
+![font samples - light](https://github.com/CodeKidH/SpringFramework/springframework/src/main/java/chapter_3_Template/images/template_callback.png)		
