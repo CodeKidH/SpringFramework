@@ -682,4 +682,5 @@ public int getCount() throws SQLException{
 
 * Feature of template/callback
 
-![font samples - light](https://github.com/CodeKidH/SpringFramework/springframework/src/main/java/chapter_3_Template/images/template_callback.png)		
+![Template_Callback]
+(https://raw.githubusercontent.com/CodeKidH/SpringFramework/master/springframework/src/main/java/chapter_3_Template/images/template_callback.png)		
