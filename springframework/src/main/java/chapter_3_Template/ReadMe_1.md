@@ -671,3 +671,14 @@ public int getCount() throws SQLException{
 	}	
 	~~~
 
+## 5. Template and callback
+
+	Template Callback Pattern
+		- Strategy Pattern + Anonymouse class in spiring
+		- Template : Strategy's context
+		- Callback : Object of Anonymouse class
+
+#### 5_1. Operation principle
+
+* Feature of template/callback
+		
