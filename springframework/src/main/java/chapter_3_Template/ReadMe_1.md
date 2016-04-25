@@ -687,7 +687,7 @@ public int getCount() throws SQLException{
 
 * JdbcContext that apply Template/Callback Pattern
 ![Jdbc_Template_Callback]
-(https://raw.githubusercontent.com/CodeKidH/SpringFramework/master/springframework/src/main/java/chapter_3_Template/images/template_callback.png)
+(https://raw.githubusercontent.com/CodeKidH/SpringFramework/master/springframework/src/main/java/chapter_3_Template/images/jdbc_template.png)
 	
 #### 5_2. Reuse of Callback
 
