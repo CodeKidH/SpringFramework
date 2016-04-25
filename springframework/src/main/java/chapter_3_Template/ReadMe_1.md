@@ -684,3 +684,67 @@ public int getCount() throws SQLException{
 
 ![Template_Callback]
 (https://raw.githubusercontent.com/CodeKidH/SpringFramework/master/springframework/src/main/java/chapter_3_Template/images/template_callback.png)		
+
+* JdbcContext that apply Template/Callback Pattern
+![Jdbc_Template_Callback]
+(https://raw.githubusercontent.com/CodeKidH/SpringFramework/master/springframework/src/main/java/chapter_3_Template/images/template_callback.png)
+	
+#### 5_2. Reuse of Callback
+
+	 Template/Callback's Issue
+	 	It is poorly readable using anonymouse class
+
+* Separation of callback
+
+	- UserDao.class
+	~~~java
+	public void deleteAll() throws SQLException{
+		
+		executeSql("delete from users"); // changed part
+		
+	}
+	
+	//callback, not changed part
+	private void executeSql(final String query)throws SQLException{
+		this.jdbcContext.workWithStatementStrategy(
+				new StatementStrategy(){
+					public PreparedStatement makePreparedStatement(Connection c)throws SQLException{
+						return c.prepareStatement(query);
+					}
+				}
+		);
+	}
+	~~~
+
+* To combine Callback with Template
+
+		Other DAO classes can use a executeSql() by making it as a class
+	
+	
+	- UserDao.class [deleteAll()]
+	~~~java
+	public void deleteAll() throws SQLException{
+		
+		this.jdbcContext.executeSql("delete from users");
+		
+	}
+	~~~
+	
+	- JdbcContext.class
+	~~~java
+	public void executeSql(final String query)throws SQLException{
+		workWithStatementStrategy(
+				new StatementStrategy(){
+					public PreparedStatement makePreparedStatement(Connection c)throws SQLException{
+						return c.prepareStatement(query);
+					}
+				}
+		);
+	}
+	~~~
+
+	
+	- Now, JdbcContext has Client, template and callback
+	![Jdbc_Template_Callback]
+	(https://raw.githubusercontent.com/CodeKidH/SpringFramework/master/springframework/src/main/java/chapter_3_Template/images/template_callback.png)
+	 	
