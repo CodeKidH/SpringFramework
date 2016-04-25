@@ -748,3 +748,69 @@ public int getCount() throws SQLException{
 	![Jdbc_Template_Callback]
 	(https://raw.githubusercontent.com/CodeKidH/SpringFramework/master/springframework/src/main/java/chapter_3_Template/images/jdbc_template_2.png)
 	 	
+
+#### 5_3. Application of Template callback
+	
+		There are a lot of Templata/callback class and api in springframework
+		
+		If a user who uses the springframework will has to know about template/callback provided by spring
+
+* Test and try/catch/finally
+		
+		Simple template/callback pattern
+		
+		Define
+			- This application will open a file and return a sum of numbers
+	
+	- numbers.txt
+	~~~java
+	1
+	2
+	3
+	4
+	~~~
+	
+	- Calculator.class
+	~~~java
+	public class Calculator {
+	
+		public Integer calcSum(String filepath)throws IOException{
+			
+			BufferedReader br = new BufferedReader(new FileReader(filepath)); // Open a file
+			Integer sum = 0;
+			String line = null;
+			while((line = br.readLine()) != null){ // Read lines one by one
+				sum += Integer.valueOf(line);
+			}
+			
+			br.close(); // Have to close
+			return sum;
+		}
+	}
+	~~~
+	
+	- CalcSumTest.class
+	~~~java
+	import java.io.IOException;
+	import static org.hamcrest.CoreMatchers.is;
+	import static org.junit.Assert.assertThat;
+	
+	import org.junit.Test;
+	
+	public class CalcSumTest {
+	
+			@Test
+			public void sumOfNumbers()throws IOException{
+				Calculator calculator = new Calculator();
+				int sum = calculator.calcSum(getClass().getResource("numbers.txt").getPath());
+				assertThat(sum,is(10));
+			}
+	}
+	~~~
+
+	~~~java
+	If it might has a exception while working, It will not be closed a file
+	so we have to deal with a exception
+	~~~
+	
+	
