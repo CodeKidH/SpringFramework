@@ -746,5 +746,5 @@ public int getCount() throws SQLException{
 	
 	- Now, JdbcContext has Client, template and callback
 	![Jdbc_Template_Callback]
-	(https://raw.githubusercontent.com/CodeKidH/SpringFramework/master/springframework/src/main/java/chapter_3_Template/images/template_callback.png)
+	(https://raw.githubusercontent.com/CodeKidH/SpringFramework/master/springframework/src/main/java/chapter_3_Template/images/jdbc_template_2.png)
 	 	
