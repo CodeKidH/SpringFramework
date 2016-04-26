@@ -813,4 +813,119 @@ public int getCount() throws SQLException{
 	so we have to deal with a exception
 	~~~
 	
+	- Calculator.class
+	~~~java
+	public class Calculator {
 	
+		public Integer calcSum(String filepath)throws IOException{
+			
+			BufferedReader br = null;
+			
+			try{
+				
+				br = new BufferedReader(new FileReader(filepath)); 
+				Integer sum = 0;
+				String line = null;
+				while((line = br.readLine()) != null){ 
+					sum += Integer.valueOf(line);
+				}
+				
+				return sum;
+				
+			}catch(IOException e){
+				System.out.println(e.getMessage());
+				throw e;
+			}finally{
+				if(br != null){
+					try{
+						br.close();
+					}catch(IOException e){
+						System.out.println(e.getMessage());
+					}
+				}
+			}
+		}
+	}
+	~~~
+* Remove a overrap and Template/callback
+	
+		To add a multiply
+	
+	- BufferedReaderCallback.interface
+	~~~java
+	public interface BufferedReaderCallback {
+		Integer doSomethingWithReader(BufferedReader br) throws IOException;
+	}
+	~~~
+	
+	- Calculator.class
+	~~~java
+	public class Calculator {
+		
+		public Integer calcSum(String filepath)throws IOException{
+			
+			BufferedReaderCallback sumCallback = 
+					new BufferedReaderCallback(){
+				public Integer doSomethingWithReader(BufferedReader br)throws IOException{
+					Integer sum = 0;
+					String line = null;
+					
+					while((line = br.readLine()) != null){
+						sum += Integer.valueOf(line);
+					}
+					
+					return sum;
+				}
+			};
+			
+			return fileReadTemplate(filepath, sumCallback);
+		}
+		
+		public Integer fileReadTemplate(String filepath, BufferedReaderCallback callback)throws IOException{
+			
+			BufferedReader br = null;
+			
+			try{
+				
+				br = new BufferedReader(new FileReader(filepath)); 
+				
+				int ret = callback.doSomethingWithReader(br);
+				
+				return ret;
+				
+			}catch(IOException e){
+				System.out.println(e.getMessage());
+				throw e;
+			}finally{
+				if(br != null){
+					try{
+						br.close();
+					}catch(IOException e){
+						System.out.println(e.getMessage());
+					}
+				}
+			}
+		}
+	}
+	~~~
+	
+	- calcTest.class
+	~~~java
+	public class CalcSumTest {
+		
+			Calculator calculator;
+			String numberFilepath;
+			
+			@Before
+			public void setUp(){
+				this.calculator = new Calculator();
+				this.numberFilepath = getClass().getResource("numbers.txt").getPath();
+			}
+			
+			@Test
+			public void sumOfNumbers()throws IOException{
+				
+				assertThat(calculator.calcSum(this.numberFilepath),is(10));
+			}
+	}
+	~~~
