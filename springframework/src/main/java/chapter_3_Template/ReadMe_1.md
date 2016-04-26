@@ -861,7 +861,7 @@ public int getCount() throws SQLException{
 	- Calculator.class
 	~~~java
 	public class Calculator {
-		
+	
 		public Integer calcSum(String filepath)throws IOException{
 			
 			BufferedReaderCallback sumCallback = 
@@ -875,6 +875,25 @@ public int getCount() throws SQLException{
 					}
 					
 					return sum;
+				}
+			};
+			
+			return fileReadTemplate(filepath, sumCallback);
+		}
+		
+		public Integer calcMultiply(String filepath)throws IOException{
+			
+			BufferedReaderCallback sumCallback = 
+					new BufferedReaderCallback(){
+				public Integer doSomethingWithReader(BufferedReader br)throws IOException{
+					Integer multiply = 1;
+					String line = null;
+					
+					while((line = br.readLine()) != null){
+						multiply *= Integer.valueOf(line);
+					}
+					
+					return multiply;
 				}
 			};
 			
@@ -907,6 +926,7 @@ public int getCount() throws SQLException{
 			}
 		}
 	}
+
 	~~~
 	
 	- calcTest.class
@@ -927,5 +947,89 @@ public int getCount() throws SQLException{
 				
 				assertThat(calculator.calcSum(this.numberFilepath),is(10));
 			}
+			
+			@Test
+			public void multiplyOfNumbers()throws IOException{
+				assertThat(calculator.calcMultiply(this.numberFilepath),is(24));
+			}
 	}
 	~~~
+
+* Template/callback refactoring
+
+		Compare method between sumOfNumbers() and multiplyOfNumbers()
+		
+		There are many overrap codes
+	
+
+	- LineCallback.interface
+	~~~java
+	public interface LineCallback {
+		Integer doSomethingWithLine(String line, Integer value);
+	}
+	~~~
+	
+	- Calculator.clss
+	~~~java
+	public class Calculator {
+	
+		public Integer calcSum(String filepath)throws IOException{
+			
+			LineCallback sumCallback = 
+					new LineCallback(){
+						public Integer doSomethingWithLine(String line, Integer value){
+							return value + Integer.valueOf(line);
+						}
+			};
+			
+			return lineReadTemplate(filepath, sumCallback,0);
+		}
+		
+		public Integer calcMultiply(String filepath)throws IOException{
+			
+			LineCallback multiplyCallback = 
+					new LineCallback(){
+						public Integer doSomethingWithLine(String line, Integer value){
+							return value * Integer.valueOf(line);
+						}
+			};
+			
+			return lineReadTemplate(filepath, multiplyCallback,1);
+		}
+		
+		
+		public Integer lineReadTemplate(String filepath, LineCallback callback, int initVal)throws IOException{
+			
+			BufferedReader br = null;
+			
+			try{
+				
+				br = new BufferedReader(new FileReader(filepath)); 
+				
+				Integer res = initVal;
+				String line = null;
+				
+				while((line = br.readLine())!= null){
+					res = callback.doSomethingWithLine(line, res);
+				}
+				
+				return res;
+					
+				
+			}catch(IOException e){
+				System.out.println(e.getMessage());
+				throw e;
+			}finally{
+				if(br != null){
+					try{
+						br.close();
+					}catch(IOException e){
+						System.out.println(e.getMessage());
+					}
+				}
+			}
+		}
+	}
+
+	~~~
+	
