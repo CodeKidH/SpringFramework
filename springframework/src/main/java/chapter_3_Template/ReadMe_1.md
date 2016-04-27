@@ -1033,3 +1033,115 @@ public int getCount() throws SQLException{
 
 	~~~
 	
+* Callback interface by using Generics
+
+	- LineCallback.interface
+	~~~java
+	public interface LineCallback<T> {
+		T doSomethingWithLine(String line, T value);
+	}
+	~~~
+	
+	- Calculator.class
+	~~~java
+	public class Calculator {
+	
+		public Integer calcSum(String filepath)throws IOException{
+			
+			LineCallback<Integer> sumCallback = 
+					new LineCallback<Integer>(){
+						public Integer doSomethingWithLine(String line, Integer value){
+							return value + Integer.valueOf(line);
+						}
+	
+						
+			};
+			
+			return lineReadTemplate(filepath, sumCallback,0);
+		}
+		
+		public Integer calcMultiply(String filepath)throws IOException{
+			
+			LineCallback<Integer> multiplyCallback = 
+					new LineCallback<Integer>(){
+						public Integer doSomethingWithLine(String line, Integer value){
+							return value * Integer.valueOf(line);
+						}
+			};
+			
+			return lineReadTemplate(filepath, multiplyCallback,1);
+		}
+		
+		
+		public String concatenate(String filepath)throws IOException{
+			LineCallback<String> concatenateCallback = 
+					new LineCallback<String>(){
+				public String doSomethingWithLine(String line, String value){
+					return value + line;
+				}
+			};
+			
+			return lineReadTemplate(filepath, concatenateCallback,"");
+		}
+		
+		public <T> T lineReadTemplate(String filepath, LineCallback<T> callback, T initVal)throws IOException{
+			
+		BufferedReader br = null;
+		
+		try{
+			
+			br = new BufferedReader(new FileReader(filepath)); 
+			
+			T res = initVal;
+			String line = null;
+			
+			while((line = br.readLine())!= null){
+				res = callback.doSomethingWithLine(line, res);
+				}
+				
+				return res;
+									
+				
+			}catch(IOException e){
+				System.out.println(e.getMessage());
+				throw e;
+			}finally{
+				if(br != null){
+					try{
+						br.close();
+					}catch(IOException e){
+						System.out.println(e.getMessage());
+					}
+				}
+			}
+		}
+	}	
+	~~~
+
+	- test
+	~~~java
+		Calculator calculator;
+		String numberFilepath;
+		
+		@Before
+		public void setUp(){
+			this.calculator = new Calculator();
+			this.numberFilepath = getClass().getResource("numbers.txt").getPath();
+		}
+		
+		@Test
+		public void sumOfNumbers()throws IOException{
+			
+			assertThat(calculator.calcSum(this.numberFilepath),is(10));
+		}
+		
+		@Test
+		public void multiplyOfNumbers()throws IOException{
+			assertThat(calculator.calcMultiply(this.numberFilepath),is(24));
+		}
+		
+		@Test
+		public void concatenateString()throws IOException{
+			assertThat(calculator.concatenate(this.numberFilepath),is("1234"));
+		}
+	~~~
