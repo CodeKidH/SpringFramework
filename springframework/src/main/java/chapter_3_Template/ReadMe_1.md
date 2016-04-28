@@ -1145,3 +1145,203 @@ public int getCount() throws SQLException{
 			assertThat(calculator.concatenate(this.numberFilepath),is("1234"));
 		}
 	~~~
+
+## 6. JdbcTemplate
+
+	Springframework provide template/callback of JDBC for us 
+	
+#### 1. update()
+
+* UserDao.class(Delete, add)
+~~~java
+public class UserDao {
+	
+	@Autowired
+	private DataSource dataSource;
+	private Connection c;
+	private User user;
+	private JdbcTemplate jdbcTemplate;
+	
+	public void setDataSource(DataSource dataSource){
+		
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+		this.dataSource = dataSource;
+	}
+	
+	public void add(final User user)throws ClassNotFoundException, SQLException{
+		this.jdbcTemplate.update("insert into users(id,name,password) values(?,?,?)",
+				user.getId(),user.getName(),user.getPassword());
+	}
+	
+	public User get(String id)throws ClassNotFoundException, SQLException{
+		
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		User user = null;
+		
+		try{
+			c = dataSource.getConnection();
+			ps = c.prepareStatement("select * from users where id = ?");
+			ps.setString(1,id);
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				user = new User();
+				user.setId(rs.getString("id"));
+				user.setName(rs.getString("name"));
+				user.setPassword(rs.getString("password"));
+			}
+			rs.close();
+			ps.close();
+			c.close();
+			
+			if(user == null){
+				throw new EmptyResultDataAccessException(1);
+			}
+			
+			return user;
+		}catch(SQLException e){
+			throw e;
+		}finally{
+			if(rs != null){
+				try{
+					rs.close();
+				}catch(SQLException e){
+					
+				}
+			}
+			if(ps != null){
+				try{
+					ps.close();
+				}catch(SQLException e){
+					
+				}
+			}
+			if(c != null){
+				try{
+					c.close();
+				}catch(SQLException e){
+					
+				}
+			}
+		}
+		
+	}
+	
+	public void deleteAll() throws SQLException{
+		
+		this.jdbcTemplate.update("delete from users");
+		
+	}
+	
+	
+	public int getCount() throws SQLException{
+		
+		
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try{
+			c= dataSource.getConnection();
+			ps = c.prepareStatement("select count(*) from users");
+			rs = ps.executeQuery();
+			rs.next();
+			return rs.getInt(1);
+		}catch(SQLException e){
+			throw e;
+		}finally{
+			if(rs != null){
+				try{
+					rs.close();
+				}catch(SQLException e){
+					
+				}
+			}
+			if(ps!=null){
+				try{
+					ps.close();
+				}catch(SQLException e){
+					
+				}
+			}
+			if(c != null){
+				try{
+					c.close();
+				}catch(SQLException e){
+					
+				}
+			}
+		}
+		
+	}
+	
+
+}
+~~~
+
+#### 2. queryForInt()
+
+* getCount()
+
+~~~java
+	public int getCount() throws SQLException{
+		
+		
+		return this.jdbcTemplate.query(new PreparedStatementCreator(){//First callback, To create Statement
+			public PreparedStatement createPreparedStatement(Connection con)throws SQLException{
+				return con.prepareStatement("select count(*) from users");
+			}
+
+		}, new ResultSetExtractor<Integer>(){	//Second callback, To extract value from ResultSet
+			public Integer extractData(ResultSet rs)throws SQLException, DataAccessException{
+				rs.next();
+				return rs.getInt(1);
+			}
+		});
+	}
+	
+	public int getCount(){
+		return this.jdbcTemplate.queryForObject("select count(*) from users", Integer.class);
+	}
+~~~
+
+#### 3. queryForObject()
+
+		ResultSetExtractor 
+			- It will return a last result
+		RowMapper
+			- It will call several times to be in mapping the ResultSet of each row
+
+* get()
+~~~java
+	public User get(String id){
+		
+		return this.jdbcTemplate.queryForObject("select * from users where id=?",new Object[]{id},//parameter value
+				new RowMapper<User>(){
+					public User mapRow(ResultSet rs, int rowNum)throws SQLException{
+						User user = new User();
+						user.setId(rs.getString("id"));
+						user.setName(rs.getString("name"));
+						user.setPassword(rs.getString("password"));
+						return user;
+					}
+		});
+		
+	}
+	
+	//queryForObject(1,2,3)
+	// 1 - PreparedStatement sql
+	// 2 - Binding value
+	// 3 - 
+~~~
+
+#### 4. query()
+
+
+* 
+
+
+	
+
