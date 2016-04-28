@@ -6,6 +6,8 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import chapter_3_Template.domain.User;
+
 public class JdbcContext {
 	
 	private DataSource dataSource;
@@ -23,6 +25,7 @@ public class JdbcContext {
 			
 			c = dataSource.getConnection();
 			ps = stmt.makePreparedStatement(c);
+			
 			ps.executeUpdate();
 			
 		}catch(SQLException e){
