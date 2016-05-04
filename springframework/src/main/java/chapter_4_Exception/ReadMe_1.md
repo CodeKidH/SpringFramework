@@ -38,5 +38,29 @@
     ~~~
     
     - Stupid 2
+    ~~~java
+    
+    }catch(SQLException e){
+    	System.out.println(e);
+    }
+    
+    }catch(SQLException e){
+    	e.printStackTrace();
+    }
+    ~~~
+    
+    - Better than that
+    
+    ~~~java
+    }catch(SQLException e){
+    	e.printStackTrace();
+    	System.exit(1);
+    }
+    ~~~
+* irresponsibility throws
+
+	User a throws Exception
+	
+    
     
 
