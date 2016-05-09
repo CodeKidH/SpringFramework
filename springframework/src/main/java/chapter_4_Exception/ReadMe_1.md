@@ -86,7 +86,7 @@
 		2. RuntimeException's child
 	
     ![Exception]
-(https://raw.githubusercontent.com/CodeKidH/SpringFramework/master/springframework/src/main/java/chapter_3_Template/images/template_callback.png)
+(https://raw.githubusercontent.com/KyleJeong/SpringFramework/master/springframework/src/main/java/chapter_4_Exception/images/exception.png)
 	
 	- Normal Exception is a red part
 	- If Method throw a check exception, It have to make a catch or to define throws
