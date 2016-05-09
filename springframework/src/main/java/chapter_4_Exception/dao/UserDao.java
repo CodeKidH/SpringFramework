@@ -35,7 +35,7 @@ public class UserDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	public void add(final User user)throws ClassNotFoundException, SQLException{
+	public void add(final User user){
 		this.jdbcTemplate.update("insert into users(id,name,password) values(?,?,?)",
 				user.getId(),user.getName(),user.getPassword());
 	}
@@ -53,7 +53,7 @@ public class UserDao {
 		
 	}
 	
-	public void deleteAll() throws SQLException{
+	public void deleteAll(){
 		
 		this.jdbcTemplate.update("delete from users");
 		
