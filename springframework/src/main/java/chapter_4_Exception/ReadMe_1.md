@@ -70,6 +70,20 @@
 	
 		 Big issus is the checked exception(explicit exception)-명시적예외
 	
+* Error
+	- java.lang.Error's subclass
+	- System has a error, Usually VM problem
+	- OutofMemoryError, ThreadDeath...
+	- I don't care about Errors
+
+* Exception and check Exception
+	- java.lang.Exception's subclass
+	- Programmer will make a Exception
+	- check Exception
+		1. Exception's subclass
+	- unchecked Exception
+		1. Exception's subclass
+		2. RuntimeException's child
 	
     
 
