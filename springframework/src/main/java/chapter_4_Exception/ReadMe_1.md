@@ -128,25 +128,27 @@
 ~~~
 	
 * Avoid
+
+
 	When Exception occur, Exception will be thrown
 	1. Define throws statement
 	2. Catch a Exception, print a log and then rethrow 
 
-- avoid 1
-~~~java
-	public void add()throws SQLException{
-		//JDBC API
-	}
-~~~
-
-- avoid2
-~~~java
-	public void add()throws SQLException{
-		try{
+	- avoid 1
+	~~~java
+		public void add()throws SQLException{
 			//JDBC API
-		}catch(SQLException e){
-			throw e;// print log
 		}
-		
-	}
-~~~
+	~~~
+	
+	- avoid2
+	~~~java
+		public void add()throws SQLException{
+			try{
+				//JDBC API
+			}catch(SQLException e){
+				throw e;// print log
+			}
+			
+		}
+	~~~
