@@ -118,7 +118,7 @@
 		try{
 			return;
 		}catch(SomeException e){
-			// print log
+			// print log and wait 
 		}finally{
 			// return resource
 		}
@@ -127,4 +127,26 @@
 	throw new RetryFailedException();//Exception occur when it over number of max
 ~~~
 	
+* Avoid
+	When Exception occur, Exception will be thrown
+	1. Define throws statement
+	2. Catch a Exception, print a log and then rethrow 
 
+- avoid 1
+~~~java
+	public void add()throws SQLException{
+		//JDBC API
+	}
+~~~
+
+- avoid2
+~~~java
+	public void add()throws SQLException{
+		try{
+			//JDBC API
+		}catch(SQLException e){
+			throw e;// print log
+		}
+		
+	}
+~~~
