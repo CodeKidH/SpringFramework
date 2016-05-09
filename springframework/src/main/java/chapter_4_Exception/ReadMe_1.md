@@ -98,7 +98,9 @@
 
 #### 1_3. How to handle it
 
-* restoration 
+* Restoration 
+
+
 		 To solve the problem and restoration
 
 
