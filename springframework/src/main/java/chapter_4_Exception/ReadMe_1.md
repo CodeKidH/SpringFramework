@@ -104,28 +104,28 @@
 		 To solve the problem and restoration
 
 
-~~~java
-	Example
-		If we use a poor network service, Our networkconnection might be disconnected
-		so we can't access to DB Server and we get a SQLException
-		
-		In this case, We can solve the problem by retrying several times
-~~~
-
-~~~java
-	int maxretry = MAX_RETRY;
-	while(maxretry --> 0){
-		try{
-			return;
-		}catch(SomeException e){
-			// print log and wait 
-		}finally{
-			// return resource
-		}
-	}
+	~~~java
+		Example
+			If we use a poor network service, Our networkconnection might be disconnected
+			so we can't access to DB Server and we get a SQLException
+			
+			In this case, We can solve the problem by retrying several times
+	~~~
 	
-	throw new RetryFailedException();//Exception occur when it over number of max
-~~~
+	~~~java
+		int maxretry = MAX_RETRY;
+		while(maxretry --> 0){
+			try{
+				return;
+			}catch(SomeException e){
+				// print log and wait 
+			}finally{
+				// return resource
+			}
+		}
+		
+		throw new RetryFailedException();//Exception occur when it over number of max
+	~~~
 	
 * Avoid
 
