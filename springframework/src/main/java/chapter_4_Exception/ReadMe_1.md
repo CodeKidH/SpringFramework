@@ -130,9 +130,9 @@
 * Avoid
 
 
-	When Exception occur, Exception will be thrown
-	1. Define throws statement
-	2. Catch a Exception, print a log and then rethrow 
+		When Exception occur, Exception will be thrown
+		1. Define throws statement
+		2. Catch a Exception, print a log and then rethrow 
 
 	- avoid 1
 	~~~java
