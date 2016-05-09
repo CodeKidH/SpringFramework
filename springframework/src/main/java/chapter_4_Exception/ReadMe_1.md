@@ -85,5 +85,44 @@
 		1. Exception's subclass
 		2. RuntimeException's child
 	
-    
+    ![Exception]
+(https://raw.githubusercontent.com/CodeKidH/SpringFramework/master/springframework/src/main/java/chapter_3_Template/images/template_callback.png)
+	
+	- Normal Exception is a red part
+	- If Method throw a check exception, It have to make a catch or to define throws
+
+* RuntimeException and uncheck/runtime exception
+
+	- java.lang.RuntimeException's subclass
+	- I don't care about it
+
+#### 1_3. How to handle it
+
+* restoration 
+		 To solve the problem and restoration
+
+
+~~~java
+	Example
+		If we use a poor network service, Our networkconnection might be disconnected
+		so we can't access to DB Server and we get a SQLException
+		
+		In this case, We can solve the problem by retrying several times
+~~~
+
+~~~java
+	int maxretry = MAX_RETRY;
+	while(maxretry --> 0){
+		try{
+			return;
+		}catch(SomeException e){
+			// print log
+		}finally{
+			// return resource
+		}
+	}
+	
+	throw new RetryFailedException();//Exception occur when it over number of max
+~~~
+	
 
