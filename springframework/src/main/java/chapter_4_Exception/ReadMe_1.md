@@ -200,5 +200,12 @@
 				catch(SQLException e){
 					throw DuplicateUserIdException().initCause(e);
 			~~~
-	
+		
+		2. To wrap a exception to handle exception easily
+
+#### 1_4. Strategy of Exception
+
+* Generalization of runtimeException
+
+
 		
