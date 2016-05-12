@@ -227,7 +227,8 @@
 
 #### 1_4. Strategy of Exception
 
-* Generalization of runtimeException
+* Handling of exception of add()
+
 
 
 		
