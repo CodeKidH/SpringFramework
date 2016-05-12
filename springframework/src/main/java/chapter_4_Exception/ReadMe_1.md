@@ -160,6 +160,16 @@
 		
 	- Exception translation has two purpose
 	
-		1. Define a proper exception to solve the exception
+		1. Define a proper exception to solve the exception quickly
+		
+			~~~java
+			Example
+				 When we add a user ID to DB, What if there is a already same ID?
+			 	 In this case, JDBC API make a SQLException
+				 and It's hard to find a resone why SQLException occur
+				 so  Exception translation will change SQLException to DuplicateUserIdException
+				 We can find a reason easily
+				
+			~~~
 	
 		
