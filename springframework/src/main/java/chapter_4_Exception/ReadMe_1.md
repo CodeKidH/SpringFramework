@@ -152,3 +152,14 @@
 			
 		}
 	~~~
+
+* Exception translation
+
+		When exception occur, exception will be translated to proper exception type
+		
+		
+	- Exception translation has two purpose
+	
+		1. Define a proper exception to solve the exception
+	
+		
