@@ -171,5 +171,34 @@
 				 We can find a reason easily
 				
 			~~~
+			
+			~~~java
+			public void add(User user)throws DuplicateUserIdException, SQLException{
+				try{
+					//add a userId
+					//This code will call the SQLException
+				}catch(SQLException e){
+					//ErrorCode is Duplicate Entry(1062)
+					if(e.getErrorCode() == MysqlErrorNumbers.ER_DUP_ENTRY)
+						throw DuplicateUserIdException();
+					else
+						throw e; //SQLException
+
+				}
+			}
+			
+			//Usually it is better to make the nested exception(충첩)
+			//I throw SQLException and DuplicateUserIdException at the same time
+			
+			1.Example for Nested Exception 1
+				
+				catch(SQLException e){
+					throw DuplicatedUserIdException(e);
+			
+			2.Example for Nested Exceptioin 2
+				
+				catch(SQLException e){
+					throw DuplicateUserIdException().initCause(e);
+			~~~
 	
 		
