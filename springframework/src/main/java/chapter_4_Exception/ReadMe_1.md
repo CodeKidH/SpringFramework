@@ -202,6 +202,28 @@
 			~~~
 		
 		2. To wrap a exception to handle exception easily
+			
+			~~~java
+			Usually We use it to change check exception to uncheck exception(runtimeexceptioin)
+				
+			EJBException
+				Most of check exceptioin in EJB Component code will not be mean anything
+				so We will wrap it with EJBException(RuntimeException) 
+			~~~
+
+			~~~java
+			try{
+				OrderHome orderHome = EJBHomeFactory.getInstance().getOrderHome();
+				Order order = orderHome.findByPrimaryKey(Integer.id);
+			}catch(NamingException ne){
+				throw new EJBException(ne);
+			}catch(SQLException se){
+				throw new EJBException(se);
+			}catch(RemoteException re){
+				throw new EJBException(re);
+			}
+			
+			~~~
 
 #### 1_4. Strategy of Exception
 
