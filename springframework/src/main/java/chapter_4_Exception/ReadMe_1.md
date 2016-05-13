@@ -228,7 +228,11 @@
 #### 1_4. Strategy of Exception
 
 * Handling of exception of add()
+	
 
+## 2. Exception translation
+
+#### 2_1. 
 
 
 		
