@@ -1,4 +1,4 @@
-# Exceptioin
+# Exception
 
 ## 1. Exception disappear
 
