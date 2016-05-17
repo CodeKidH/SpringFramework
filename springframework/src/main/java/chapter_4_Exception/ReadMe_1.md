@@ -407,5 +407,23 @@ public class UserDaoJdbc implements UserDao{
 		
 		~~~
 	- view
+	
 	![Exception]
 	(https://raw.githubusercontent.com/KyleJeong/SpringFramework/master/springframework/src/main/java/chapter_4_Exception/images/da.png)
+
+* Add duplicatedKey test
+
+		Which exception it return when duplicateKey exception occur?
+	
+	- UserDaoTest.java
+	~~~java
+	@Test(expected=DataAccessException.class)
+	public void duplicatedKey(){
+		dao.deleteAll();
+		
+		dao.add(user1);
+		dao.add(user1);
+	}
+	
+	//It will work well
+	~~~
