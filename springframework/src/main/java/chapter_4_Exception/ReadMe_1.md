@@ -277,6 +277,7 @@ public void deleteAll()throws SQLException{
 	public void add(User user) throws HibernateException //Hibernate
 	public void add(User user) throws JdoException //JDO
 	public void add(User user) throws SQLException //JDBC
+	
 	~~~
 	
 	
