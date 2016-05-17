@@ -11,7 +11,7 @@
 		<property name="password" value="1111"/>
 	</bean>
 	
-	<bean id="userDao" class="chapter_4_Exception.dao.UserDao">
+	<bean id="userDao" class="chapter_4_Exception.dao.UserDaoJdbc">
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
 	
