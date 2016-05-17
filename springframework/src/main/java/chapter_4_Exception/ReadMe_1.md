@@ -254,10 +254,10 @@ public void deleteAll()throws SQLException{
 * DAO Interface and Separation of realization
 	
 	
-	Why do I make a DAO far away other part?
-		- Because of separation
-		- Client will don't care about Which data access tech we use
-	but It has a trouble with Exception info 
+		Why do I make a DAO far away other part?
+			- Because of separation
+			- Client will don't care about Which data access tech we use
+		but It has a trouble with Exception info 
 	
 	- UserDao.interface
 	~~~java
@@ -291,13 +291,3 @@ public void deleteAll()throws SQLException{
 
 * 
 	
-	
-	
-	
-
-	
-	
-	
-
-
-		
