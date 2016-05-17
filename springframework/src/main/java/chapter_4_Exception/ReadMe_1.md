@@ -301,7 +301,7 @@ public void deleteAll()throws SQLException{
 		
 	
 
-## 2_4. Isolation UserDao 
+#### 2_4. Isolation UserDao 
 
 * UserDao.Interface
 ~~~java
@@ -396,3 +396,16 @@ public class UserDaoJdbc implements UserDao{
 </beans>
 							
 ~~~
+
+* Make up for TestCode fault
+
+	- UserDaoTest.java
+		~~~java
+		@Autowired
+		private UserDao dao; //I don't need to change UserDao to UserDaoJdbc
+					// Because I might change DataAccessTech in the future
+		
+		~~~
+	- view
+	![Exception]
+	(https://raw.githubusercontent.com/KyleJeong/SpringFramework/master/springframework/src/main/java/chapter_4_Exception/images/da.png)
