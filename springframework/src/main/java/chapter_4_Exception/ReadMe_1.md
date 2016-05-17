@@ -289,5 +289,14 @@ public void deleteAll()throws SQLException{
 	//I need a way to arrange data access API's Exception
 	~~~
 
-* 
+* Data access exception abstraction and DataAccessException hierarchy structor
+
+		Spring organize the various data access tech's exception in DataAccessException hierarchy structor
+		
+	
+	- Example for DataAccessException
+	~~~java
+	JdbcTemplate's SQLException will connect with each DB and return meaningful exception
+	~~~
+		
 	
