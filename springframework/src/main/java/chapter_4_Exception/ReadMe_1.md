@@ -232,7 +232,29 @@
 
 ## 2. Exception translation
 
-#### 2_1. 
+#### 2_1. limit to JDBC
+	
+	How can we switch the DB  flexibly?
+	
+	There are two problems 
+
+* Nonstandard SQL
+	
+	If we use a specific DB(Mysql), We will use a Nonstandard SQL for Mysql in DAO
+	It means our system depend on Mysql
+
+* SQLException error
+
+	There are a lot of error and Error's cause is different by each DB
+
+#### 2_3. DAO Interface and DataAccessException hierarchy structor
+
+		DataAccessException will make the consistent exception regardless of Data access tech
+
+* DAO Interface and Separation of realization
+
+	
+	
 
 
 		
