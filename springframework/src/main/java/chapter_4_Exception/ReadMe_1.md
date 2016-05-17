@@ -295,8 +295,104 @@ public void deleteAll()throws SQLException{
 		
 	
 	- Example for DataAccessException
-	~~~java
-	JdbcTemplate's SQLException will connect with each DB and return meaningful exception
-	~~~
+		~~~java
+		JdbcTemplate's SQLException will connect with each DB and return meaningful exception
+		~~~
 		
 	
+
+## 2_4. Isolation UserDao 
+
+* UserDao.Interface
+~~~java
+public interface UserDao {
+	
+	void add(User user);
+	User get(String id);
+	List<User> getAll();
+	void deleteAll();
+	int getCount();
+}
+~~~
+
+* UserDaoJdbc.java
+~~~java
+
+public class UserDaoJdbc implements UserDao{
+	
+	
+	@Autowired
+	private DataSource dataSource;
+	private JdbcTemplate jdbcTemplate;
+	
+	private RowMapper<User> userMapper = new RowMapper<User>(){
+		public User mapRow(ResultSet rs, int rowNum)throws SQLException{
+			User user = new User();
+			user.setId(rs.getString("id"));
+			user.setName(rs.getString("name"));
+			user.setPassword(rs.getString("password"));
+			return user;
+		}
+	};
+	
+	public void setDataSource(DataSource dataSource){
+		
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+	
+	public void add(final User user){
+		
+		this.jdbcTemplate.update("insert into users(id,name,password) values(?,?,?)",
+				user.getId(),user.getName(),user.getPassword());
+	}
+	
+	public List<User> getAll(){
+		
+		return this.jdbcTemplate.query("select * from users order by id",
+				this.userMapper);
+	}
+	
+	public User get(String id){
+		
+		return this.jdbcTemplate.queryForObject("select * from users where id=?",new Object[]{id},
+				this.userMapper);
+		
+	}
+	
+	public void deleteAll(){
+		
+		this.jdbcTemplate.update("delete from users");
+		
+	}
+	
+	
+	public int getCount(){
+		return this.jdbcTemplate.queryForObject("select count(*) from users", Integer.class);
+	}
+
+}
+
+~~~
+
+* applicatinContext.xml
+~~~xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+								http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost/test"/>
+		<property name="username" value="root"/>
+		<property name="password" value="1111"/>
+	</bean>
+	
+	<bean id="userDao" class="chapter_4_Exception.dao.UserDaoJdbc">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+</beans>
+							
+~~~
