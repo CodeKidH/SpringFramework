@@ -3,22 +3,22 @@
 ## 1. Exception disappear
 
     
-    * UserDao.class
-    ~~~java
-    //Before
-    public void deleteAll()throws SQLException{
-		
-  		this.jdbcContext.executeSql("delete from users");
-  		
-  	}
+* UserDao.class
+~~~java
+//Before
+public void deleteAll()throws SQLException{
+	
+  	this.jdbcContext.executeSql("delete from users");
   	
-  	//After
-	  public void deleteAll(){
-		
-  		this.jdbcTemplate.update("delete from users");
-  		
-  	}
-    ~~~
+  }
+  
+  //After
+  public void deleteAll(){
+	
+  	this.jdbcTemplate.update("delete from users");
+  	
+  }
+~~~
       - Where is a Exception?
       
 #### 1_1. Stupid Exception
@@ -252,7 +252,38 @@
 		DataAccessException will make the consistent exception regardless of Data access tech
 
 * DAO Interface and Separation of realization
+	
+	
+	Why do I make a DAO far away other part?
+		- Because of separation
+		- Client will don't care about Which data access tech we use
+	but It has a trouble with Exception info 
+	
+	- UserDao.interface
+	~~~java
+	public interface UserDao{
+		public void add(User user)
+	}
 
+	// But I can use the above code because Data Access tech API that DAO use will throw a Exception 
+	
+	//If use a JDBC API, It will throw a SQLExcepion
+	public void add(User user) throws SQLException 
+	
+	//If the method define throws SQLException, JDBC only access the method
+	//so Other Data Access API(JPA, HIbernate, JDO) can't access it
+	
+	public void add(User user) throws PersistenException //JPA
+	public void add(User user) throws HibernateException //Hibernate
+	public void add(User user) throws JdoException //JDO
+	public void add(User user) throws SQLException //JDBC
+	~~~
+	
+	
+	
+	
+
+	
 	
 	
 
