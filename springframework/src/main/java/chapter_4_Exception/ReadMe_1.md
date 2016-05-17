@@ -280,6 +280,17 @@ public void deleteAll()throws SQLException{
 	
 	~~~
 	
+	- How to solve it
+	~~~java
+	//To use the Exception
+	public void add(User user) throws Exception
+	
+	//But the way is so irresponsible
+	//I need a way to arrange data access API's Exception
+	~~~
+
+* 
+	
 	
 	
 	
