@@ -12,5 +12,11 @@
       4) Level is SILVER and When User get a recommedation 30 times, User is GOLD
       5) This program will execute in a batch
   
+
+#### 1_1. Add a Field
+
+* Level enum
+
+
   
   
