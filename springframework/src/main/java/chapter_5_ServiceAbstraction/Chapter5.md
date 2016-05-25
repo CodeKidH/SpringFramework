@@ -245,5 +245,88 @@ public class UserDaoJdbc implements UserDao{
 ~~~
 
 
-  
-  
+#### 1_2. To add a Modify function 
+ 
+* To add the function to @Test
+~~~java
+	@Test
+	public void update(){
+		dao.deleteAll();
+		
+		dao.add(user1);
+		
+		user1.setName("KYLE");
+		user1.setPassword("spring");
+		user1.setLevel(Level.GOLD);
+		user1.setLogin(1000);
+		user1.setRecommend(999);
+		user1.setRecommend(999);
+		
+		dao.update(user1);
+		
+		User user1update = dao.get(user1.getId());
+		checkSameUser(user1, user1update);
+		
+		
+	}
+~~~
+
+* UserDao and UserDaoJdbc
+	- UserDao
+	~~~java
+	
+	public interface UserDao {
+		
+		void add(User user);
+		User get(String id);
+		List<User> getAll();
+		void deleteAll();
+		int getCount();
+		public void update(User user);
+	}
+	~~~
+	
+	- UserDaoJdbc
+	~~~java
+	public void update(User user){
+		this.jdbcTemplate.update(
+					"update users set name = ?, password = ?, level = ?, login = ?," +
+						"recommend = ? where id = ?", user.getName(), user.getPassword(),
+						user.getLevel().intValue(), user.getLogin(), user.getRecommend(),
+						user.getId()
+				);
+	}
+	~~~
+
+* To improve the Update test
+
+	If There is a no where statement in update?
+	The test will be success so we need a perfect test
+
+	- @Test
+	~~~java
+	@Test
+	public void update(){
+		dao.deleteAll();
+		
+		dao.add(user1); // It will be modified
+		dao.add(user2); // It will not be modified
+		
+		user1.setName("KYLE");
+		user1.setPassword("spring");
+		user1.setLevel(Level.GOLD);
+		user1.setLogin(1000);
+		user1.setRecommend(999);
+		user1.setRecommend(999);
+		
+		dao.update(user1);
+		
+		User user1update = dao.get(user1.getId());
+		checkSameUser(user1, user1update);
+		User user2same = dao.get(user2.getId());
+		checkSameUser(user2, user2same);
+		
+		
+	}
+	~~~
+
