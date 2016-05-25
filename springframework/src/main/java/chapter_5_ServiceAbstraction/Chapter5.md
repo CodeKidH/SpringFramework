@@ -341,3 +341,61 @@ public class UserDaoJdbc implements UserDao{
 	3. Update()
 
 
+   ![Exception]
+(https://raw.githubusercontent.com/KyleJeong/SpringFramework/master/springframework/src/main/java/chapter_5_ServiceAbstraction/images/userService.png)
+
+* UserServiceClass and Bean
+
+	- UserService.java
+	~~~java
+	public class UserService {
+		
+		UserDao userDao;
+		
+		public void setUserDao(UserDao userDao){
+			this.userDao = userDao;
+		}
+	
+	}
+	~~~
+	
+	- applicationContext.xml
+	~~~xml
+	<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.springframework.org/schema/beans
+									http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+		
+		<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+			<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+			<property name="url" value="jdbc:mysql://localhost/test"/>
+			<property name="username" value="root"/>
+			<property name="password" value="1111"/>
+		</bean>
+		
+		<bean id="userService" class="chapter_5_ServiceAbstraction.service.UserService">
+			<property name="userDao" ref="userDao"/>
+		</bean>
+		
+		<bean id="userDao" class="chapter_5_ServiceAbstraction.dao.UserDaoJdbc">
+			<property name="dataSource" ref="dataSource"/>
+		</bean>
+		
+	</beans>
+	~~~
+
+* UserServiceTest
+
+	- UserServiceTest.java
+	~~~java
+	@RunWith(SpringJUnit4ClassRunner.class)
+	@ContextConfiguration(locations="/chapter_5_ServiceAbstraction/dao/applicationContext.xml")
+	public class UserServiceTest {
+		
+		@Autowired
+		UserService userService;
+	}
+	~~~
+
+	
