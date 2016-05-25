@@ -300,8 +300,10 @@ public class UserDaoJdbc implements UserDao{
 
 * To improve the Update test
 
+
 	If There is a no where statement in update?
 	The test will be success so we need a perfect test
+
 
 	- @Test
 	~~~java
@@ -330,3 +332,10 @@ public class UserDaoJdbc implements UserDao{
 	}
 	~~~
 
+
+#### 1_3. UserService.upgradeLevels()
+
+	
+	1. Invoke a getAll()
+	2. It will execute the upgrade function by each user
+	3. Update()
