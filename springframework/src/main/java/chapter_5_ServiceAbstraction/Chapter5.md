@@ -489,5 +489,53 @@ public class UserDaoJdbc implements UserDao{
 	}
 
 	~~~
+
+#### 1_4. UserService.add()
+
+	New customers has a BASIC LEVEL
+	
+* First step- To make a test
+	
+	There are two ways
+		1) The customer has a already level
+		2) The customer level is null
+	
+
+
+	- UserServiceTest
+	~~~java
+	@Test
+	public void add(){
+		
+		userDao.deleteAll();
+		
+		User userWithLevel = users.get(4); //It has a already GOLD LEVEL 
+		User userWithoutLevel = users.get(0);
+		
+		userWithoutLevel.setLevel(null);
+		
+		userService.add(userWithLevel);
+		userService.add(userWithoutLevel);
+		
+		//Get datas from DB
+		User userWithLevelRead = userDao.get(userWithLevel.getId());
+		User userWithoutLevelRead = userDao.get(userWithoutLevel.getId());
+		
+		assertThat(userWithLevelRead.getLevel(),is(userWithLevel.getLevel()));
+		assertThat(userWithoutLevelRead.getLevel(),is(Level.BASIC));
+		
+	}
+	~~~
+
+	- UserService
+	~~~java
+	public void add(User user){
+		if(user.getLevel() == null){
+			user.setLevel(Level.BASIC);
+			userDao.add(user);
+		}
+	}
+	~~~
+
 	
 	
