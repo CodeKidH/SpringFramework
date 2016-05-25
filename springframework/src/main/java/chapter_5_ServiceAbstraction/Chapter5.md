@@ -335,7 +335,9 @@ public class UserDaoJdbc implements UserDao{
 
 #### 1_3. UserService.upgradeLevels()
 
-	
+	0. Make a Service
 	1. Invoke a getAll()
 	2. It will execute the upgrade function by each user
 	3. Update()
+
+
