@@ -566,38 +566,39 @@ public void upgradeLevels(){
 	3) Upgrade user
 ~~~
 
-	- Check method of state of user
-	
-	~~~java
-	private boolean canUpgradeLevel(User user){
-		
-		Level currentLevel = user.getLevel();
-		
-		switch(currentLevel){
-			case BASIC : return (user.getLogin() >= 50);
-			case SILVER : return (user.getRecommend() >= 30);
-			case GOLD : return false;
-			default : throw new IllegalArgumentException("Unknown level:"+ currentLevel);
-		}
-	}
-	~~~
 
-	- Upgrade or callback
+		- Check method of state of user
+		
+		~~~java
+		private boolean canUpgradeLevel(User user){
+			
+			Level currentLevel = user.getLevel();
+			
+			switch(currentLevel){
+				case BASIC : return (user.getLogin() >= 50);
+				case SILVER : return (user.getRecommend() >= 30);
+				case GOLD : return false;
+				default : throw new IllegalArgumentException("Unknown level:"+ currentLevel);
+			}
+		}
+		~~~
 	
-	~~~java
-	private void upgradeLevel(User user){
-		if(user.getLevel() == Level.BASIC) user.setLevel(Level.SILVER);
-		else if(user.getLevel() == Level.SILVER) user.setLevel(Level.GOLD);
-		userDao.update(user);
-	}
-	~~~
-	
-	- upgradeLevel() has problems
-	
-	~~~java
-		1. There is a no Exception handling
-		2. If I have a new level , I have to make a if
-		3. It show me next level and How to set up a level
-	~~~
+		- Upgrade or callback
+		
+		~~~java
+		private void upgradeLevel(User user){
+			if(user.getLevel() == Level.BASIC) user.setLevel(Level.SILVER);
+			else if(user.getLevel() == Level.SILVER) user.setLevel(Level.GOLD);
+			userDao.update(user);
+		}
+		~~~
+		
+		- upgradeLevel() has problems
+		
+		~~~java
+			1. There is a no Exception handling
+			2. If I have a new level , I have to make a if
+			3. It show me next level and How to set up a level
+		~~~
 	
 	
