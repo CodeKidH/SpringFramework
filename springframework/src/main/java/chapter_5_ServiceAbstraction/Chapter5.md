@@ -567,6 +567,7 @@ public void upgradeLevels(){
 ~~~
 
 	- Check method of state of user
+	
 	~~~java
 	private boolean canUpgradeLevel(User user){
 		
@@ -582,6 +583,7 @@ public void upgradeLevels(){
 	~~~
 
 	- Upgrade or callback
+	
 	~~~java
 	private void upgradeLevel(User user){
 		if(user.getLevel() == Level.BASIC) user.setLevel(Level.SILVER);
@@ -591,6 +593,7 @@ public void upgradeLevels(){
 	~~~
 	
 	- upgradeLevel() has problems
+	
 	~~~java
 		1. There is a no Exception handling
 		2. If I have a new level , I have to make a if
