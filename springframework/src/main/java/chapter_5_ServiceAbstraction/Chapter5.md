@@ -545,26 +545,26 @@ public class UserDaoJdbc implements UserDao{
 
 * upgradeLevel() refactorinh
 
-~~~java
-public void upgradeLevels(){
-		
-	List<User> users = userDao.getAll();
-	for(User user : users){
-		
-		if(canUpgradeLevel(user)){
-			upgradeLevel(user);
+	~~~java
+	public void upgradeLevels(){
+			
+		List<User> users = userDao.getAll();
+		for(User user : users){
+			
+			if(canUpgradeLevel(user)){
+				upgradeLevel(user);
+			}
+			
 		}
 		
 	}
+	~~~
 	
-}
-~~~
-
-~~~java
-	1) It get all users info
-	2) Check user info
-	3) Upgrade user
-~~~
+	~~~java
+		1) It get all users info
+		2) Check user info
+		3) Upgrade user
+	~~~
 
 
 	- Check method of state of user
