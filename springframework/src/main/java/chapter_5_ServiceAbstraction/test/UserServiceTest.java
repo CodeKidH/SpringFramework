@@ -1,10 +1,13 @@
 package chapter_5_ServiceAbstraction.test;
 
-import java.util.Arrays;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
+import static chapter_5_ServiceAbstraction.service.UserService.MIN_LOGCOUNT_FOR_SILVER ;
+import static chapter_5_ServiceAbstraction.service.UserService.MIN_RECCOMEND_FOR_SILVER ;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,11 +37,11 @@ public class UserServiceTest {
 	@Before
 	public void setUp(){
 		users = Arrays.asList(
-					new User("kyle","jeong","p1",Level.BASIC,49, 0),
-					new User("kyle1","jeong1","p2",Level.BASIC,50, 0),
+					new User("kyle","jeong","p1",Level.BASIC,MIN_LOGCOUNT_FOR_SILVER, 0),
+					new User("kyle1","jeong1","p2",Level.BASIC,MIN_LOGCOUNT_FOR_SILVER, 0),
 					new User("kyle2","jeong2","p3",Level.SILVER,60, 29),
-					new User("kyle3","jeong3","p4",Level.SILVER,60, 30),
-					new User("kyle4","jeong4","p5",Level.GOLD,100, 100)
+					new User("kyle3","jeong3","p4",Level.SILVER,60, MIN_RECCOMEND_FOR_SILVER),
+					new User("kyle4","jeong4","p5",Level.GOLD,100, MIN_RECCOMEND_FOR_SILVER)
 				);
 	}
 	
@@ -52,15 +55,42 @@ public class UserServiceTest {
 		
 		userService.upgradeLevels();
 		
-		checkLevel(users.get(0),Level.BASIC);
-		checkLevel(users.get(1),Level.SILVER);
-		checkLevel(users.get(2),Level.SILVER);
-		checkLevel(users.get(3),Level.GOLD);
-		checkLevel(users.get(4),Level.GOLD);
+		checkLevelUpgrade(users.get(0), false);
+		checkLevelUpgrade(users.get(1), true);
+		checkLevelUpgrade(users.get(2), false);
+		checkLevelUpgrade(users.get(3), true);
+		checkLevelUpgrade(users.get(4), false);
 	}
 	
-	private void checkLevel(User user, Level expectedLevel){
+	private void checkLevelUpgrade(User user, boolean upgrade){ //boolean will check, It is possible to update level
 		User userUpdate = userDao.get(user.getId());
-		assertThat(userUpdate.getLevel(), is(expectedLevel));
+		
+		if(upgrade){
+			assertThat(userUpdate.getLevel(), is(user.getLevel().nextLevel())); // update
+		}else{
+			assertThat(userUpdate.getLevel(), is(user.getLevel()));// not update
+		}
+		
+	}
+	
+	@Test
+	public void add(){
+		
+		userDao.deleteAll();
+		
+		User userWithLevel = users.get(4); //It has a already GOLD LEVEL 
+		User userWithoutLevel = users.get(0);
+		userWithoutLevel.setLevel(null);
+		
+		userService.add(userWithLevel);
+		userService.add(userWithoutLevel);
+		
+		//Get datas from DB
+		User userWithLevelRead = userDao.get(userWithLevel.getId());
+		User userWithoutLevelRead = userDao.get(userWithoutLevel.getId());
+		
+		assertThat(userWithLevelRead.getLevel(),is(userWithLevel.getLevel()));
+		assertThat(userWithoutLevelRead.getLevel(),is(Level.BASIC));
+		
 	}
 }
