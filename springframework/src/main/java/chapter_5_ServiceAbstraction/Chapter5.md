@@ -769,7 +769,7 @@ public class UserDaoJdbc implements UserDao{
 	}
 	~~~
 
-#### 1_6. User Test
+* User Test
 	
 	I make a new method in User.java
 
@@ -824,5 +824,56 @@ public class UserTest {
 	I don't use a @Autowired
 ~~~
 
-#### 1_7. UserServiceTest
+* UserServiceTest
 
+	~~~java
+	@Test
+	public void upgradeLevels(){
+		
+		userDao.deleteAll();
+		
+		for(User user : users)
+			userDao.add(user);
+		
+		userService.upgradeLevels();
+		
+		checkLevelUpgrade(users.get(0), false);
+		checkLevelUpgrade(users.get(1), true);
+		checkLevelUpgrade(users.get(2), false);
+		checkLevelUpgrade(users.get(3), true);
+		checkLevelUpgrade(users.get(4), false);
+	}
+	
+	private void checkLevelUpgrade(User user, boolean upgrade){ //boolean will check, It is possible to update level
+		User userUpdate = userDao.get(user.getId());
+		
+		if(upgrade){
+			assertThat(userUpdate.getLevel(), is(user.getLevel().nextLevel())); // update
+		}else{
+			assertThat(userUpdate.getLevel(), is(user.getLevel()));// not update
+		}
+		
+	}
+	~~~
+
+	- Overlap
+	~~~java
+	
+	public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
+	public static final int MIN_RECCOMEND_FOR_SILVER = 30;
+	
+	private boolean canUpgradeLevel(User user){
+		
+		Level currentLevel = user.getLevel();
+		
+		switch(currentLevel){
+			case BASIC : return (user.getLogin() >= MIN_LOGCOUNT_FOR_SILVER);
+			case SILVER : return (user.getRecommend() >= MIN_RECCOMEND_FOR_SILVER);
+			case GOLD : return false;
+			default : throw new IllegalArgumentException("Unknown level:"+ currentLevel);
+		}
+	}
+	~~~
+
+	- policy of upgrade
+	
