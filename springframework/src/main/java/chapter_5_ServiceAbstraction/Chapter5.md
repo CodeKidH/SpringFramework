@@ -877,3 +877,77 @@ public class UserTest {
 
 	- policy of upgrade
 	
+
+## 2. Transaction service abstraction
+
+#### 2_1. all or nothing
+
+	How will User's level change it when server will be disconnected during changing moment
+	
+	I have to make a exception for testing
+
+* UserService for testing
+	
+	I will extend from UserSerivce
+
+
+	- UserServiceTest.java(TestUserService.class)
+	~~~java
+		static class TestUserService extends UserService{
+			
+			private String id;
+			
+			private TestUserService(String id){ //This Id will make a exception
+				this.id = id;
+			}
+			
+			protected void upgradeLevel(User user){
+				if(user.getId().equals(this.id))throw new TestUserServiceException();
+				super.upgradeLevels();
+			}
+		}
+	
+		static class TestUserServiceException extends RuntimeException{
+			
+		}
+	}
+
+	~~~
+
+* To make a Exception test
+
+	- Test
+	~~~java
+	@Test
+	public void upgradeAllOrNothing(){
+		
+		UserService testUserService = new TestUserService(users.get(3).getId());
+		
+		testUserService.setUserDao(this.userDao); //hand-operated DI
+		
+		userDao.deleteAll();
+		for(User user:users)userDao.add(user);
+		
+		try{
+			testUserService.upgradeLevels();
+			fail("TestUserServiceException expected"); //Exception occur
+		}catch(TestUserServiceException e){
+			
+		}
+		
+		checkLevelUpgrade(users.get(1), false); //Check a level status 
+	}
+	~~~
+
+	
+  ![Exception]
+(https://raw.githubusercontent.com/KyleJeong/SpringFramework/master/springframework/src/main/java/chapter_5_ServiceAbstraction/images/gotfail.png)
+
+	~~~java
+		Second user level was changed
+		but when forth user got a exception, Second user level was same level
+		It had to be return to the original state
+	~~~
+	
+
+	
