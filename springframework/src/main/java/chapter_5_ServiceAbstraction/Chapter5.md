@@ -930,7 +930,9 @@ public class UserTest {
 		
 		try{
 			testUserService.upgradeLevels();
-			fail("TestUserServiceException expected"); //Exception occur
+
+			//If this test will work well, This point Exception occur, It's not meaningless 
+			fail("TestUserServiceException expected"); 
 		}catch(TestUserServiceException e){
 			
 		}
