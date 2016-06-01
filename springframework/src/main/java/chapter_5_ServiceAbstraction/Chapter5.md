@@ -953,3 +953,21 @@ public class UserTest {
 	
 
 	
+#### 2_2 . Configuring a transaction
+
+* JDBC Transaction Example
+
+		Transaction demarcation : Transaction will start from setAutoCommit(false) to commit() or rollback()
+		local transaction : It is in DB Connection
+
+	
+	
+  ![Exception]
+(https://raw.githubusercontent.com/KyleJeong/SpringFramework/master/springframework/src/main/java/chapter_5_ServiceAbstraction/images/jdbcTransaction.png)
+
+
+* UserService and UserDao problem of transactioin
+
+
+
+
