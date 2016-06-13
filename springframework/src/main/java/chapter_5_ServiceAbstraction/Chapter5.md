@@ -1049,7 +1049,8 @@ How to solve this problem?
 I have to drop either the transaction or clean code?
 ~~~
 
-	- Remove the Connection Parameter
+
+- Remove the Connection Parameter
 	
 	
 	
