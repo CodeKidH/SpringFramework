@@ -1041,9 +1041,15 @@ public class UserTest {
 	- I have to add a Connection parameter to Dao methods and UserService code
 	- Connection paramter will keep us from starting other data access tech
 	
-	How to solve this problem?
-	I have to drop either the transaction or clean code?
 
-* 
+* Transaction synchronization
 
+~~~java
+How to solve this problem?
+I have to drop either the transaction or clean code?
+~~~
+
+	- Remove the Connection Parameter
+	
+	
 	
