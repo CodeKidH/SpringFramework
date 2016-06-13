@@ -985,8 +985,23 @@ public class UserTest {
 	Though one of update() will be fail, All update() transactions has to recover original state
 ~~~
 
+
+
 	How to make a one transaction in case of upgradeLevels() 
+	One transaction One Connection
 	
 
 
+* Transaction config in business logic
 
+	a Transaction logic will move into UserService to solve the trasaction problem(upgradeLevels())
+	
+	upgradeLevels() will be started also transaction will be started 
+	
+	so I have to make this
+	
+	
+	  ![Exception]
+(https://raw.githubusercontent.com/KyleJeong/SpringFramework/master/springframework/src/main/java/chapter_5_ServiceAbstraction/images/upgradelevelstransaction.png)
+
+	
