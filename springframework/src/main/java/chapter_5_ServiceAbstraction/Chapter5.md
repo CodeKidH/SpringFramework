@@ -994,14 +994,14 @@ public class UserTest {
 
 * Transaction config in business logic
 
+~~~java
 	a Transaction logic will move into UserService to solve the trasaction problem(upgradeLevels())
 	
 	upgradeLevels() will be started also transaction will be started 
-	
 	so I have to make this
-	
-	
-	  ![Exception]
+~~~	
+
+![Exception]
 (https://raw.githubusercontent.com/KyleJeong/SpringFramework/master/springframework/src/main/java/chapter_5_ServiceAbstraction/images/upgradelevelstransaction.png)
 
 	
