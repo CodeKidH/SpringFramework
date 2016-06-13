@@ -1044,13 +1044,15 @@ public class UserTest {
 
 * Transaction synchronization
 
-~~~java
-How to solve this problem?
-I have to drop either the transaction or clean code?
-~~~
+	~~~java
+	How to solve this problem?
+	I have to drop either the transaction or clean code?
+	~~~
 
 
-- Remove the Connection Parameter
+	- Remove the Connection Parameter
+	
+		Transaction synchronization : it save connection  
 	
 	
 	
