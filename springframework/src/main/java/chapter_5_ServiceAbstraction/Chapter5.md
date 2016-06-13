@@ -967,7 +967,26 @@ public class UserTest {
 
 
 * UserService and UserDao problem of transactioin
+	
+  ![Exception]
+(https://raw.githubusercontent.com/KyleJeong/SpringFramework/master/springframework/src/main/java/chapter_5_ServiceAbstraction/images/transactionprocess.png)
 
+
+	UserDao will make a new DB Connection through JdbcTemplate
+	
+~~~java
+	Example
+		- first update() will be success 
+		- Second update() fail
+	
+	Result
+		- First transaction result will maintain in DB
+	
+	Though one of update() will be fail, All update() transactions has to recover original state
+~~~
+
+	How to make a one transaction in case of upgradeLevels() 
+	
 
 
 
