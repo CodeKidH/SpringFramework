@@ -1012,6 +1012,8 @@ public class UserTest {
 ~~~
 
 	- UserDao
+	
+	
 	~~~java
 	public interface UserDao {
 		
@@ -1022,4 +1024,26 @@ public class UserTest {
 		int getCount();
 		public void update(Connection c,User user);
 	}
+	
+	
+	private void upgradeLevel(Connection c,User user){
+		user.upgradeLevel();
+		userDao.update(c,user);
+	}
 	~~~
+![Exception]
+(https://raw.githubusercontent.com/KyleJeong/SpringFramework/master/springframework/src/main/java/chapter_5_ServiceAbstraction/images/userdaotransaction.png)
+
+
+* UserService transaction problems
+
+	- I no longer use the JdbcTemplate
+	- I have to add a Connection parameter to Dao methods and UserService code
+	- Connection paramter will keep us from starting other data access tech
+	
+	How to solve this problem?
+	I have to drop either the transaction or clean code?
+
+* 
+
+	
