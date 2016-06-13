@@ -1,10 +1,10 @@
 package chapter_5_ServiceAbstraction.test;
 
+import static chapter_5_ServiceAbstraction.service.UserService.MIN_LOGCOUNT_FOR_SILVER;
+import static chapter_5_ServiceAbstraction.service.UserService.MIN_RECCOMEND_FOR_SILVER;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-
-import static chapter_5_ServiceAbstraction.service.UserService.MIN_LOGCOUNT_FOR_SILVER ;
-import static chapter_5_ServiceAbstraction.service.UserService.MIN_RECCOMEND_FOR_SILVER ;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.List;
@@ -93,4 +93,44 @@ public class UserServiceTest {
 		assertThat(userWithoutLevelRead.getLevel(),is(Level.BASIC));
 		
 	}
+	
+	@Test
+	public void upgradeAllOrNothing(){
+		
+		UserService testUserService = new TestUserService(users.get(3).getId());
+		
+		testUserService.setUserDao(this.userDao); //hand-operated DI
+		
+		userDao.deleteAll();
+		for(User user:users)userDao.add(user);
+		
+		try{
+			testUserService.upgradeLevels();
+			fail("TestUserServiceException expected"); //Exception occur
+		}catch(TestUserServiceException e){
+			
+		}
+		
+		checkLevelUpgrade(users.get(1), false); //Check a level status 
+	}
+	
+	static class TestUserService extends UserService{
+		
+		private String id;
+		
+		private TestUserService(String id){ //This Id will make a exception
+			this.id = id;
+		}
+		
+		protected void upgradeLevel(User user){
+			if(user.getId().equals(this.id))throw new TestUserServiceException();
+			super.upgradeLevels();
+		}
+	}
+
+	static class TestUserServiceException extends RuntimeException{
+		
+	}
 }
+
+
