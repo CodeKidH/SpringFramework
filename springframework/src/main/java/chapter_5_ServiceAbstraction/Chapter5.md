@@ -1005,3 +1005,21 @@ public class UserTest {
 (https://raw.githubusercontent.com/KyleJeong/SpringFramework/master/springframework/src/main/java/chapter_5_ServiceAbstraction/images/upgradelevelstransaction.png)
 
 	
+~~~java
+	UseDao's update() have to use a upgradeLevel()'s Connection to work in one transaction
+	
+	so UserDao will be changed like that
+~~~
+
+	- UserDao
+	~~~java
+	public interface UserDao {
+		
+		void add(Connection c,User user);
+		User get(Connection c,String id);
+		List<User> getAll();
+		void deleteAll();
+		int getCount();
+		public void update(Connection c,User user);
+	}
+	~~~
