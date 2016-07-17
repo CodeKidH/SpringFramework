@@ -2,14 +2,43 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-3.1.xsd
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 	
+	<!-- 
+	 DI by using annotation
 	<context:annotation-config/>
 	<context:component-scan base-package="DI.*"/>	
+	-->
 	
+	<context:annotation-config/>
+	<context:component-scan base-package="DI.*"/>
 	
+	<!-- data access
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClass}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+	-->
+	
+	<!-- 
+		using properties
+		<util:properties id="msgProperties" location="classpath:DI/properties/message.properties/">
+	
+	<bean id="message" class="sample.MessageServiceImpl">
+		<property name="message" value="#{msgProperties.message}"/>
+	</bean>
+	
+	<bean id="productService" class="DI.service.ProductServiceImpl" autowire="byType"/>
+	<bean id="productDao" class="DI.dao.ProductDaoImpl"/>
+	 -->
+		<util:properties id="msgProperties" location="classpath:DI/properties/message.properties"/>
 </beans>

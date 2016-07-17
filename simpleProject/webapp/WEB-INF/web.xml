@@ -4,4 +4,23 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  
+  <context-param>
+  		<param-name>contextConfigLocation</param-name>
+  		<param-value>/WEB-INF/applicationContext.xml</param-value>
+  </context-param>
+  
+  <listener>
+  	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <!-- 
+  	Listener를 사용 할수 없을시
+  	
+  <servlet>
+  	<servlet-name>context</servlet-name>
+  	<servlet-class>org.springframework.web.context.ContextLoaderServlet</servlet-class>
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  -->
 </web-app>
