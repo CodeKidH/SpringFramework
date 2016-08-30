@@ -1,4 +1,4 @@
-package DI.test;
+/*package DI.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,3 +25,4 @@ public class ProductServiceTest {
 		
 	}
 }
+*/

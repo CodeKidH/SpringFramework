@@ -1,4 +1,4 @@
-package AOP.aop;
+/*package AOP.aop;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -61,3 +61,4 @@ public class MyFirstAspect {
 	
 
 }
+*/

@@ -2,23 +2,45 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context
-		http://www.springframework.org/schema/context/spring-context.xsd">
-	
-	<!-- 1 -->
-	<context:component-scan base-package="sample.customer.biz.service"/>
-	
-	<!-- 2 -->
-	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-		<property name="basename" value="classpath:/META-INF/messages"/>
-	</bean>	
-	
-	<!-- 3 -->
-	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
-		<property name="validationMessageSource" ref="messageSource"/>
-	</bean>
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 
+  <context:component-scan base-package="sample.customer.web.controller"/>
+
+  <!-- Spring MVCアノテーション利用設定 -->
+  <mvc:annotation-driven
+    validator="validator">
+    <!-- for REST API
+    <mvc:message-converters>
+      <bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter"/>
+    </mvc:message-converters>
+    -->
+  </mvc:annotation-driven>
+
+  <!-- Static Resourceの設定 -->
+  <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" />
+
+  <bean id="multipartResolver"
+      class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
+  <!-- Viewの設定 -->
+
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/WEB-INF/views/"/>
+    <property name="suffix" value=".jsp"/>
+  </bean>
+
+  <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+    <property name="exceptionMappings">
+      <props>
+        <prop key="java.lang.Exception">error</prop>
+      </props>
+    </property>
+  </bean>
 </beans>
